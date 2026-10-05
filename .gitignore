@@ -1,0 +1,66 @@
+# ---------- OS / editor ----------
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# ---------- Python / backend ----------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+.venv/
+venv/
+env/
+ENV/
+
+# uv
+.uv/
+uv.lock.bak
+
+# env files
+.env
+.env.*
+!.env.example
+
+# SQLite / data
+backend/data/
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# Alembic (keep migrations, ignore local artifacts)
+backend/alembic/versions/__pycache__/
+
+# pytest / coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# ---------- Node / frontend ----------
+node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/.vite/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.eslintcache
+
+# ---------- Misc ----------
+*.log
+*.local
