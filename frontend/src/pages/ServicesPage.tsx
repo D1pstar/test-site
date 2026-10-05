@@ -1,15 +1,63 @@
 import { Section, SectionHeader } from '../components/Section'
+import ServiceCard from '../components/ServiceCard'
+import CTABand from '../components/CTABand'
+import { CardSkeleton } from '../components/Skeleton'
+import ErrorState from '../components/ErrorState'
+import { useServices } from '../hooks/useServices'
 
 export default function ServicesPage() {
+  const services = useServices()
+
   return (
     <main>
-      <Section>
+      <Section className="pt-14 sm:pt-20">
         <SectionHeader
           eyebrow="Services"
           title="What we do"
-          description="Full services detail coming in Part 5."
+          description="A focused set of capabilities, done well. Every engagement is scoped to what actually moves your business forward."
         />
       </Section>
+
+      <Section className="border-t border-ink-200 pt-10">
+        {services.isLoading && (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <CardSkeleton />
+            <CardSkeleton />
+            <CardSkeleton />
+            <CardSkeleton />
+            <CardSkeleton />
+            <CardSkeleton />
+          </div>
+        )}
+
+        {services.isError && (
+          <ErrorState
+            title="Couldn’t load services"
+            message={(services.error as Error).message}
+          />
+        )}
+
+        {services.data && services.data.length === 0 && (
+          <p className="rounded-xl border border-ink-200 bg-white p-6 text-sm text-ink-600">
+            No services yet.
+          </p>
+        )}
+
+        {services.data && services.data.length > 0 && (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {services.data.map((s) => (
+              <ServiceCard key={s.id} service={s} />
+            ))}
+          </div>
+        )}
+      </Section>
+
+      <div className="border-t border-ink-200 pt-16 sm:pt-20">
+        <CTABand
+          title="Not sure which service fits?"
+          description="Tell us what you're trying to accomplish and we'll suggest a scope."
+        />
+      </div>
     </main>
   )
 }
