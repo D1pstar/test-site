@@ -1,13 +1,13 @@
 import { Section, SectionHeader } from '../components/Section'
 
-export default function ServicesPage() {
+export default function ContactPage() {
   return (
     <main>
       <Section>
         <SectionHeader
-          eyebrow="Services"
-          title="What we do"
-          description="Full services detail coming in Part 5."
+          eyebrow="Contact"
+          title="Get in touch"
+          description="Working contact form coming in Part 5."
         />
       </Section>
     </main>

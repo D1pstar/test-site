@@ -48,7 +48,6 @@ export default function Footer() {
           <h3 className="text-sm font-semibold text-ink-900">Explore</h3>
           <ul className="mt-4 space-y-2 text-sm text-ink-600">
             <li><Link to="/services" className="hover:text-ink-900">Services</Link></li>
-            <li><Link to="/portfolio" className="hover:text-ink-900">Portfolio</Link></li>
             <li><Link to="/about" className="hover:text-ink-900">About</Link></li>
             <li><Link to="/contact" className="hover:text-ink-900">Contact</Link></li>
           </ul>

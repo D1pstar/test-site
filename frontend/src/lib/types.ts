@@ -15,31 +15,6 @@ export type Service = {
   created_at: string
 }
 
-export type Project = {
-  id: number
-  slug: string
-  title: string
-  client: string
-  summary: string
-  description: string
-  cover_image_url: string
-  tags: string
-  year: number
-  sort_order: number
-  created_at: string
-}
-
-export type Testimonial = {
-  id: number
-  author_name: string
-  author_role: string
-  author_company: string
-  quote: string
-  avatar_url: string
-  sort_order: number
-  created_at: string
-}
-
 export type ContactMessage = {
   id: number
   name: string

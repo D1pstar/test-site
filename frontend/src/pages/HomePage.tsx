@@ -2,21 +2,13 @@ import { ArrowRight, Sparkles } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Section, SectionHeader } from '../components/Section'
 import ServiceCard from '../components/ServiceCard'
-import ProjectCard from '../components/ProjectCard'
-import TestimonialCard from '../components/TestimonialCard'
 import CTABand from '../components/CTABand'
-import { CardSkeleton, ProjectSkeleton, Skeleton } from '../components/Skeleton'
+import { CardSkeleton } from '../components/Skeleton'
 import ErrorState from '../components/ErrorState'
 import { useServices } from '../hooks/useServices'
-import { useProjects } from '../hooks/useProjects'
-import { useTestimonials } from '../hooks/useTestimonials'
 
 export default function HomePage() {
   const services = useServices()
-  const projects = useProjects()
-  const testimonials = useTestimonials()
-
-  const featured = projects.data?.slice(0, 3) ?? []
 
   return (
     <main>
@@ -40,10 +32,10 @@ export default function HomePage() {
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <Link
-              to="/portfolio"
+              to="/contact"
               className="inline-flex items-center gap-1.5 rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-brand-700"
             >
-              See our work
+              Start a project
               <ArrowRight className="size-4" />
             </Link>
             <Link
@@ -115,95 +107,6 @@ export default function HomePage() {
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {services.data.map((s) => (
                 <ServiceCard key={s.id} service={s} />
-              ))}
-            </div>
-          )}
-        </div>
-      </Section>
-
-      {/* Featured projects */}
-      <Section className="border-t border-ink-200">
-        <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-          <SectionHeader
-            eyebrow="Portfolio"
-            title="Selected work"
-            description="Recent projects we're proud of — a small slice of the portfolio."
-          />
-          <Link
-            to="/portfolio"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:text-brand-700"
-          >
-            View all projects
-            <ArrowRight className="size-4" />
-          </Link>
-        </div>
-
-        <div className="mt-10">
-          {projects.isLoading && (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              <ProjectSkeleton />
-              <ProjectSkeleton />
-              <ProjectSkeleton />
-            </div>
-          )}
-
-          {projects.isError && (
-            <ErrorState
-              title="Couldn’t load projects"
-              message={(projects.error as Error).message}
-            />
-          )}
-
-          {projects.data && projects.data.length === 0 && (
-            <p className="rounded-xl border border-ink-200 bg-white p-6 text-sm text-ink-600">
-              No projects yet.
-            </p>
-          )}
-
-          {featured.length > 0 && (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {featured.map((p) => (
-                <ProjectCard key={p.id} project={p} />
-              ))}
-            </div>
-          )}
-        </div>
-      </Section>
-
-      {/* Testimonials */}
-      <Section className="border-t border-ink-200">
-        <SectionHeader
-          eyebrow="Testimonials"
-          title="What clients say"
-          description="Real feedback from the kind of clients we like working with."
-        />
-
-        <div className="mt-10">
-          {testimonials.isLoading && (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              <Skeleton className="h-56 w-full" />
-              <Skeleton className="h-56 w-full" />
-              <Skeleton className="h-56 w-full" />
-            </div>
-          )}
-
-          {testimonials.isError && (
-            <ErrorState
-              title="Couldn’t load testimonials"
-              message={(testimonials.error as Error).message}
-            />
-          )}
-
-          {testimonials.data && testimonials.data.length === 0 && (
-            <p className="rounded-xl border border-ink-200 bg-white p-6 text-sm text-ink-600">
-              No testimonials yet.
-            </p>
-          )}
-
-          {testimonials.data && testimonials.data.length > 0 && (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {testimonials.data.map((t) => (
-                <TestimonialCard key={t.id} testimonial={t} />
               ))}
             </div>
           )}

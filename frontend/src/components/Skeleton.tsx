@@ -21,16 +21,3 @@ export function CardSkeleton() {
     </div>
   )
 }
-
-export function ProjectSkeleton() {
-  return (
-    <div className="overflow-hidden rounded-xl border border-ink-200 bg-white shadow-sm">
-      <Skeleton className="aspect-[4/3] w-full rounded-none" />
-      <div className="p-6">
-        <Skeleton className="h-3 w-1/3" />
-        <Skeleton className="mt-3 h-5 w-2/3" />
-        <Skeleton className="mt-3 h-4 w-full" />
-      </div>
-    </div>
-  )
-}
