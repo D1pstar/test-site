@@ -3,6 +3,7 @@ import { CheckCircle2, Loader2, Mail, Phone, Send } from 'lucide-react'
 import { Section } from '../components/Section'
 import ErrorState from '../components/ErrorState'
 import { useSubmitContact } from '../hooks/useContact'
+import { usePageTitle } from '../hooks/usePageTitle'
 import type { ContactMessageCreate } from '../lib/types'
 
 type FormState = {
@@ -29,6 +30,8 @@ function validate(form: FormState): Record<string, string> {
 }
 
 export default function ContactPage() {
+  usePageTitle('Contact')
+
   const [form, setForm] = useState<FormState>(INITIAL)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [touched, setTouched] = useState<Record<string, boolean>>({})
@@ -71,7 +74,6 @@ export default function ContactPage() {
     <main>
       <Section className="pt-14 sm:pt-20">
         <div className="grid gap-12 lg:grid-cols-5 lg:gap-16">
-          {/* Left: intro + details */}
           <div className="lg:col-span-2">
             <p className="text-xs font-semibold uppercase tracking-widest text-brand-600">
               Contact
@@ -110,7 +112,6 @@ export default function ContactPage() {
             </ul>
           </div>
 
-          {/* Right: form */}
           <div className="lg:col-span-3">
             {submitted ? (
               <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-8">

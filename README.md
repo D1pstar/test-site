@@ -1,10 +1,13 @@
 # test-site
 
-A polished demo website used to show prospective clients what a professional web presence looks like. This is **not** a real product — it's a sales/demo artifact.
+A polished demo website used to show prospective clients what a professional
+web presence looks like. **Not a real product** — it's a sales/demo artifact.
 
 ## Purpose
 
-Give sales conversations something tangible to point at: a fast, modern, responsive site with real routing, real data flow, and real polish — built on the same stack we'd ship for a paying client.
+Give sales conversations something tangible to point at: a fast, modern,
+responsive site with real routing, real data flow, and real polish — built on
+the same stack we'd ship for a paying client.
 
 ## Stack
 
@@ -26,38 +29,34 @@ Give sales conversations something tangible to point at: a fast, modern, respons
 - Pydantic Settings (`.env`)
 - SQLite (`backend/data/app.db`)
 
-## Project layout
+## Routes
 
-    test-site/
-    ├── backend/          # FastAPI app
-    │   ├── alembic/      # migrations
-    │   ├── app/          # application code
-    │   │   ├── models/
-    │   │   ├── schemas/
-    │   │   └── routers/
-    │   └── data/         # sqlite db (gitignored)
-    ├── frontend/         # React + Vite app
-    │   └── src/
-    │       ├── components/
-    │       ├── pages/
-    │       ├── hooks/
-    │       └── lib/
-    └── README.md
+| Path | Page |
+|------|------|
+| `/` | Home — hero, services grid, CTA |
+| `/services` | Services index |
+| `/services/:slug` | Service detail |
+| `/about` | About |
+| `/contact` | Contact form (POSTs to `/api/contact`) |
+| `*` | 404 |
+
+## API
+
+| Method | Path | Notes |
+|--------|------|-------|
+| GET  | `/api/health` | liveness |
+| GET  | `/api/services` | list |
+| GET  | `/api/services/{slug}` | single |
+| POST | `/api/services` | create |
+| GET  | `/api/projects` | list (not used by UI currently) |
+| GET  | `/api/testimonials` | list (not used by UI currently) |
+| POST | `/api/contact` | submit message |
+| GET  | `/api/contact` | list messages (dev helper) |
+| POST | `/api/seed` | wipe + reinsert sample content |
 
 ## Development
 
-Four terminals, side by side:
+### Option A — one command
 
-| Terminal | Purpose | Command |
-|----------|---------|---------|
-| 1 | Backend (uvicorn) | `cd backend && uv run uvicorn app.main:app --reload` |
-| 2 | Frontend (vite) | `cd frontend && npm run dev` |
-| 3 | git / alembic / uv / npm | ad-hoc |
-| 4 | tests / curl / misc | ad-hoc |
-
-Backend: http://localhost:8000
-Frontend: http://localhost:5173 (proxies `/api` → backend)
-
-## Status
-
-Scaffolding in progress. See commit history for build log.
+```bash
+./dev.sh

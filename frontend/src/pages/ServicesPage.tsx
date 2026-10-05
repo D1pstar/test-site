@@ -4,8 +4,10 @@ import CTABand from '../components/CTABand'
 import { CardSkeleton } from '../components/Skeleton'
 import ErrorState from '../components/ErrorState'
 import { useServices } from '../hooks/useServices'
+import { usePageTitle } from '../hooks/usePageTitle'
 
 export default function ServicesPage() {
+  usePageTitle('Services')
   const services = useServices()
 
   return (

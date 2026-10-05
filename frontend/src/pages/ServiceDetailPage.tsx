@@ -6,11 +6,14 @@ import { Skeleton } from '../components/Skeleton'
 import ErrorState from '../components/ErrorState'
 import { getIcon } from '../lib/icons'
 import { useService, useServices } from '../hooks/useServices'
+import { usePageTitle } from '../hooks/usePageTitle'
 
 export default function ServiceDetailPage() {
   const { slug } = useParams<{ slug: string }>()
   const service = useService(slug)
   const allServices = useServices()
+
+  usePageTitle(service.data?.title ?? 'Service')
 
   const others = (allServices.data ?? []).filter((s) => s.slug !== slug).slice(0, 3)
 

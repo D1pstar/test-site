@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { ArrowRight, CheckCircle2 } from 'lucide-react'
 import { Section, SectionHeader } from '../components/Section'
 import CTABand from '../components/CTABand'
+import { usePageTitle } from '../hooks/usePageTitle'
 
 const VALUES = [
   {
@@ -30,6 +31,8 @@ const STATS = [
 ]
 
 export default function AboutPage() {
+  usePageTitle('About')
+
   return (
     <main>
       <Section className="pt-14 sm:pt-20">
