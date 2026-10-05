@@ -5,6 +5,14 @@ on ``Base.metadata`` before autogenerate runs. Add new model imports
 below as they are created.
 """
 
-from app.models.ping import Ping  # noqa: F401
+from app.models.contact import ContactMessage
+from app.models.project import Project
+from app.models.service import Service
+from app.models.testimonial import Testimonial
 
-__all__ = ["Ping"]
+__all__ = [
+    "ContactMessage",
+    "Project",
+    "Service",
+    "Testimonial",
+]
