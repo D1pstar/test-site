@@ -16,7 +16,7 @@ export default function HomePage() {
     <main>
       <Section className="pt-14 sm:pt-20">
         <div className="max-w-3xl">
-          <div className="inline-flex items-center gap-2 rounded-full border border-ink-200 bg-white px-3 py-1 text-xs font-medium text-ink-600 shadow-sm dark:border-ink-800 dark:bg-ink-800/50 dark:text-ink-300">
+          <div className="glass-subtle inline-flex items-center gap-2 rounded-full border border-white/50 bg-white/50 px-3.5 py-1.5 text-xs font-medium text-ink-700 dark:border-white/10 dark:bg-white/5 dark:text-ink-300">
             <Sparkles className="size-3.5 text-brand-500 dark:text-brand-400" />
             Studio-quality design and development
           </div>
@@ -34,20 +34,20 @@ export default function HomePage() {
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <Link
               to="/contact"
-              className="inline-flex items-center gap-1.5 rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-brand-700"
+              className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-b from-brand-500 to-brand-700 px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-brand-900/30 transition-transform hover:scale-[1.02] active:scale-[0.98]"
             >
               Start a project
               <ArrowRight className="size-4" />
             </Link>
             <Link
               to="/services"
-              className="inline-flex items-center gap-1.5 rounded-lg border border-ink-200 bg-white px-4 py-2.5 text-sm font-medium text-ink-700 hover:border-ink-300 dark:border-ink-700 dark:bg-ink-800/50 dark:text-ink-200 dark:hover:border-ink-600"
+              className="glass glass-spec inline-flex items-center gap-1.5 rounded-full border border-white/50 bg-white/40 px-5 py-2.5 text-sm font-medium text-ink-800 transition-all hover:bg-white/60 dark:border-white/10 dark:bg-white/5 dark:text-ink-200 dark:hover:bg-white/10"
             >
               What we do
             </Link>
           </div>
 
-          <dl className="mt-12 grid max-w-2xl grid-cols-3 gap-6 border-t border-ink-200 pt-8 dark:border-ink-800">
+          <dl className="glass glass-spec mt-12 grid max-w-2xl grid-cols-3 gap-6 rounded-3xl border border-white/40 bg-white/40 px-6 py-6 dark:border-white/10 dark:bg-white/5">
             <div>
               <dt className="text-xs uppercase tracking-wider text-ink-500 dark:text-ink-500">Projects</dt>
               <dd className="mt-1 text-2xl font-semibold tracking-tight">120+</dd>
@@ -64,7 +64,7 @@ export default function HomePage() {
         </div>
       </Section>
 
-      <Section className="border-t border-ink-200 dark:border-ink-800">
+      <Section className="border-t border-ink-200/60 pt-14 dark:border-ink-800/60">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <SectionHeader
             eyebrow="Services"
@@ -98,7 +98,7 @@ export default function HomePage() {
           )}
 
           {services.data && services.data.length === 0 && (
-            <p className="rounded-xl border border-ink-200 bg-white p-6 text-sm text-ink-600 dark:border-ink-800 dark:bg-ink-800/50 dark:text-ink-400">
+            <p className="glass glass-spec rounded-3xl border border-white/40 bg-white/50 p-6 text-sm text-ink-600 dark:border-white/10 dark:bg-white/5 dark:text-ink-400">
               No services yet.
             </p>
           )}
@@ -113,7 +113,7 @@ export default function HomePage() {
         </div>
       </Section>
 
-      <div className="border-t border-ink-200 pt-16 sm:pt-20 dark:border-ink-800">
+      <div className="pt-16 sm:pt-20">
         <CTABand />
       </div>
     </main>

@@ -13,9 +13,9 @@ export default function ServiceCard({ service }: Props) {
   return (
     <Link
       to={`/services/${service.slug}`}
-      className="group flex flex-col rounded-xl border border-ink-200 bg-white p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:border-ink-300 hover:shadow-md dark:border-ink-800 dark:bg-ink-800/50 dark:hover:border-ink-700"
+      className="glass glass-spec group flex flex-col rounded-3xl border border-white/40 bg-white/50 p-6 transition-all hover:-translate-y-0.5 hover:bg-white/60 dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10"
     >
-      <span className="inline-flex size-11 items-center justify-center rounded-lg bg-brand-50 text-brand-600 dark:bg-brand-900/40 dark:text-brand-300">
+      <span className="inline-flex size-11 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-400 to-brand-600 text-white shadow-md shadow-brand-900/20">
         <Icon className="size-5" />
       </span>
       <h3 className="mt-5 text-lg font-semibold tracking-tight">{service.title}</h3>

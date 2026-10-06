@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom'
 import { ArrowRight, CheckCircle2 } from 'lucide-react'
 import { Section, SectionHeader } from '../components/Section'
 import CTABand from '../components/CTABand'
-import CatsLayer from '../components/cats/CatsLayer'
 import { usePageTitle } from '../hooks/usePageTitle'
 
 const VALUES = [
@@ -35,7 +34,7 @@ export default function AboutPage() {
   usePageTitle('About')
 
   return (
-    <main className="pb-28">
+    <main className="pb-32">
       <Section className="pt-14 sm:pt-20">
         <div className="max-w-3xl">
           <SectionHeader
@@ -133,8 +132,6 @@ export default function AboutPage() {
       <div className="border-t border-ink-200 pt-16 sm:pt-20 dark:border-ink-800">
         <CTABand />
       </div>
-
-      <CatsLayer />
     </main>
   )
 }

@@ -18,6 +18,7 @@ const queryClient = new QueryClient({
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
+    <div className="ambient-bg" aria-hidden="true" />
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <App />

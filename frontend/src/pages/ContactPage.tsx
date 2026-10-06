@@ -88,7 +88,7 @@ export default function ContactPage() {
 
             <ul className="mt-10 space-y-4 text-sm">
               <li className="flex items-center gap-3">
-                <span className="inline-flex size-9 items-center justify-center rounded-lg bg-brand-50 text-brand-600 dark:bg-brand-900/40 dark:text-brand-300">
+                <span className="inline-flex size-9 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-brand-600 text-white shadow-md shadow-brand-900/20">
                   <Mail className="size-4" />
                 </span>
                 <a
@@ -99,7 +99,7 @@ export default function ContactPage() {
                 </a>
               </li>
               <li className="flex items-center gap-3">
-                <span className="inline-flex size-9 items-center justify-center rounded-lg bg-brand-50 text-brand-600 dark:bg-brand-900/40 dark:text-brand-300">
+                <span className="inline-flex size-9 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-brand-600 text-white shadow-md shadow-brand-900/20">
                   <Phone className="size-4" />
                 </span>
                 <a
@@ -114,9 +114,11 @@ export default function ContactPage() {
 
           <div className="lg:col-span-3">
             {submitted ? (
-              <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-8 dark:border-emerald-900/60 dark:bg-emerald-950/40">
+              <div className="glass-strong glass-spec rounded-3xl border border-emerald-200/60 bg-emerald-50/60 p-8 dark:border-emerald-900/40 dark:bg-emerald-950/30">
                 <div className="flex items-start gap-3">
-                  <CheckCircle2 className="mt-0.5 size-6 shrink-0 text-emerald-600 dark:text-emerald-400" />
+                  <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400">
+                    <CheckCircle2 className="size-5" />
+                  </span>
                   <div>
                     <h2 className="text-lg font-semibold tracking-tight text-emerald-900 dark:text-emerald-200">
                       Message received
@@ -133,7 +135,7 @@ export default function ContactPage() {
                         setErrors({})
                         mutation.reset()
                       }}
-                      className="mt-5 inline-flex items-center rounded-lg border border-emerald-300 bg-white px-3.5 py-2 text-sm font-medium text-emerald-800 hover:bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-200 dark:hover:bg-emerald-900/60"
+                      className="mt-5 inline-flex items-center rounded-full border border-emerald-300/70 bg-white/70 px-4 py-2 text-sm font-medium text-emerald-800 transition-all hover:bg-white dark:border-emerald-800/60 dark:bg-emerald-900/40 dark:text-emerald-200 dark:hover:bg-emerald-900/60"
                     >
                       Send another message
                     </button>
@@ -144,7 +146,7 @@ export default function ContactPage() {
               <form
                 noValidate
                 onSubmit={onSubmit}
-                className="rounded-xl border border-ink-200 bg-white p-6 shadow-sm sm:p-8 dark:border-ink-800 dark:bg-ink-800/50"
+                className="glass-strong glass-spec rounded-3xl border border-white/40 bg-white/50 p-6 sm:p-8 dark:border-white/10 dark:bg-white/5"
               >
                 {submitError && (
                   <div className="mb-6">
@@ -201,10 +203,10 @@ export default function ContactPage() {
                     value={form.message}
                     onChange={(e) => update('message', e.target.value)}
                     onBlur={() => blur('message')}
-                    className={`mt-1.5 block w-full rounded-lg border bg-white px-3 py-2 text-sm text-ink-900 shadow-sm outline-none transition-colors focus:ring-2 dark:bg-ink-900 dark:text-ink-100 ${
+                    className={`glass-subtle mt-1.5 block w-full rounded-2xl border bg-white/40 px-4 py-3 text-sm text-ink-900 shadow-sm outline-none transition-all placeholder:text-ink-400 focus:bg-white/70 focus:ring-2 dark:bg-white/5 dark:text-ink-100 dark:placeholder:text-ink-500 dark:focus:bg-white/10 ${
                       touched.message && errors.message
-                        ? 'border-red-300 focus:border-red-400 focus:ring-red-100 dark:border-red-800 dark:focus:ring-red-900/40'
-                        : 'border-ink-200 focus:border-brand-400 focus:ring-brand-100 dark:border-ink-700 dark:focus:border-brand-500 dark:focus:ring-brand-900/40'
+                        ? 'border-red-300 focus:border-red-400 focus:ring-red-200/60 dark:border-red-800 dark:focus:ring-red-900/40'
+                        : 'border-white/50 focus:border-brand-400 focus:ring-brand-300/50 dark:border-white/10 dark:focus:border-brand-500 dark:focus:ring-brand-800/40'
                     }`}
                   />
                   {touched.message && errors.message && (
@@ -219,7 +221,7 @@ export default function ContactPage() {
                   <button
                     type="submit"
                     disabled={mutation.isPending}
-                    className="inline-flex items-center gap-1.5 rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-brand-700 disabled:cursor-not-allowed disabled:opacity-60"
+                    className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-b from-brand-500 to-brand-700 px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-brand-900/30 transition-transform hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:scale-100"
                   >
                     {mutation.isPending ? (
                       <>
@@ -278,10 +280,10 @@ function Field({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onBlur={onBlur}
-        className={`mt-1.5 block w-full rounded-lg border bg-white px-3 py-2 text-sm text-ink-900 shadow-sm outline-none transition-colors focus:ring-2 dark:bg-ink-900 dark:text-ink-100 ${
+        className={`glass-subtle mt-1.5 block w-full rounded-2xl border bg-white/40 px-4 py-2.5 text-sm text-ink-900 shadow-sm outline-none transition-all placeholder:text-ink-400 focus:bg-white/70 focus:ring-2 dark:bg-white/5 dark:text-ink-100 dark:placeholder:text-ink-500 dark:focus:bg-white/10 ${
           error
-            ? 'border-red-300 focus:border-red-400 focus:ring-red-100 dark:border-red-800 dark:focus:ring-red-900/40'
-            : 'border-ink-200 focus:border-brand-400 focus:ring-brand-100 dark:border-ink-700 dark:focus:border-brand-500 dark:focus:ring-brand-900/40'
+            ? 'border-red-300 focus:border-red-400 focus:ring-red-200/60 dark:border-red-800 dark:focus:ring-red-900/40'
+            : 'border-white/50 focus:border-brand-400 focus:ring-brand-300/50 dark:border-white/10 dark:focus:border-brand-500 dark:focus:ring-brand-800/40'
         }`}
       />
       {error && <p className="mt-1.5 text-xs text-red-600 dark:text-red-400">{error}</p>}
