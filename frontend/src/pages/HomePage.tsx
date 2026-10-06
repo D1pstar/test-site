@@ -14,20 +14,19 @@ export default function HomePage() {
 
   return (
     <main>
-      {/* Hero */}
       <Section className="pt-14 sm:pt-20">
         <div className="max-w-3xl">
-          <div className="inline-flex items-center gap-2 rounded-full border border-ink-200 bg-white px-3 py-1 text-xs font-medium text-ink-600 shadow-sm">
-            <Sparkles className="size-3.5 text-brand-500" />
+          <div className="inline-flex items-center gap-2 rounded-full border border-ink-200 bg-white px-3 py-1 text-xs font-medium text-ink-600 shadow-sm dark:border-ink-800 dark:bg-ink-800/50 dark:text-ink-300">
+            <Sparkles className="size-3.5 text-brand-500 dark:text-brand-400" />
             Studio-quality design and development
           </div>
           <h1 className="mt-6 text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
             A web presence that does your work{' '}
-            <span className="bg-gradient-to-r from-brand-500 to-brand-700 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-brand-500 to-brand-700 bg-clip-text text-transparent dark:from-brand-400 dark:to-brand-500">
               justice.
             </span>
           </h1>
-          <p className="mt-6 max-w-2xl text-base leading-relaxed text-ink-600 sm:text-lg">
+          <p className="mt-6 max-w-2xl text-base leading-relaxed text-ink-600 sm:text-lg dark:text-ink-400">
             We design and build fast, modern websites that look sharp, read
             clearly, and turn visitors into customers. This page is a live demo
             of what that looks like.
@@ -42,31 +41,30 @@ export default function HomePage() {
             </Link>
             <Link
               to="/services"
-              className="inline-flex items-center gap-1.5 rounded-lg border border-ink-200 bg-white px-4 py-2.5 text-sm font-medium text-ink-700 hover:border-ink-300"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-ink-200 bg-white px-4 py-2.5 text-sm font-medium text-ink-700 hover:border-ink-300 dark:border-ink-700 dark:bg-ink-800/50 dark:text-ink-200 dark:hover:border-ink-600"
             >
               What we do
             </Link>
           </div>
 
-          <dl className="mt-12 grid max-w-2xl grid-cols-3 gap-6 border-t border-ink-200 pt-8">
+          <dl className="mt-12 grid max-w-2xl grid-cols-3 gap-6 border-t border-ink-200 pt-8 dark:border-ink-800">
             <div>
-              <dt className="text-xs uppercase tracking-wider text-ink-500">Projects</dt>
+              <dt className="text-xs uppercase tracking-wider text-ink-500 dark:text-ink-500">Projects</dt>
               <dd className="mt-1 text-2xl font-semibold tracking-tight">120+</dd>
             </div>
             <div>
-              <dt className="text-xs uppercase tracking-wider text-ink-500">Years</dt>
+              <dt className="text-xs uppercase tracking-wider text-ink-500 dark:text-ink-500">Years</dt>
               <dd className="mt-1 text-2xl font-semibold tracking-tight">8</dd>
             </div>
             <div>
-              <dt className="text-xs uppercase tracking-wider text-ink-500">Avg. rating</dt>
+              <dt className="text-xs uppercase tracking-wider text-ink-500 dark:text-ink-500">Avg. rating</dt>
               <dd className="mt-1 text-2xl font-semibold tracking-tight">4.9</dd>
             </div>
           </dl>
         </div>
       </Section>
 
-      {/* Services */}
-      <Section className="border-t border-ink-200">
+      <Section className="border-t border-ink-200 dark:border-ink-800">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <SectionHeader
             eyebrow="Services"
@@ -75,7 +73,7 @@ export default function HomePage() {
           />
           <Link
             to="/services"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:text-brand-700"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-300"
           >
             All services
             <ArrowRight className="size-4" />
@@ -100,7 +98,7 @@ export default function HomePage() {
           )}
 
           {services.data && services.data.length === 0 && (
-            <p className="rounded-xl border border-ink-200 bg-white p-6 text-sm text-ink-600">
+            <p className="rounded-xl border border-ink-200 bg-white p-6 text-sm text-ink-600 dark:border-ink-800 dark:bg-ink-800/50 dark:text-ink-400">
               No services yet.
             </p>
           )}
@@ -115,8 +113,7 @@ export default function HomePage() {
         </div>
       </Section>
 
-      {/* CTA */}
-      <div className="border-t border-ink-200 pt-16 sm:pt-20">
+      <div className="border-t border-ink-200 pt-16 sm:pt-20 dark:border-ink-800">
         <CTABand />
       </div>
     </main>

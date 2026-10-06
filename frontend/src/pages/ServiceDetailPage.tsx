@@ -39,7 +39,7 @@ export default function ServiceDetailPage() {
         <Section className="pt-14 sm:pt-20">
           <Link
             to="/services"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-ink-600 hover:text-ink-900"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-ink-600 hover:text-ink-900 dark:text-ink-400 dark:hover:text-ink-100"
           >
             <ArrowLeft className="size-4" />
             All services
@@ -50,7 +50,7 @@ export default function ServiceDetailPage() {
               <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
                 Service not found
               </h1>
-              <p className="mt-3 text-ink-600">
+              <p className="mt-3 text-ink-600 dark:text-ink-400">
                 We couldn't find a service with that name.
               </p>
               <Link
@@ -81,23 +81,23 @@ export default function ServiceDetailPage() {
       <Section className="pt-14 sm:pt-20">
         <Link
           to="/services"
-          className="inline-flex items-center gap-1.5 text-sm font-medium text-ink-600 hover:text-ink-900"
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-ink-600 hover:text-ink-900 dark:text-ink-400 dark:hover:text-ink-100"
         >
           <ArrowLeft className="size-4" />
           All services
         </Link>
 
         <div className="mt-8 max-w-3xl">
-          <span className="inline-flex size-12 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
+          <span className="inline-flex size-12 items-center justify-center rounded-xl bg-brand-50 text-brand-600 dark:bg-brand-900/40 dark:text-brand-300">
             <Icon className="size-6" />
           </span>
           <h1 className="mt-6 text-4xl font-semibold tracking-tight sm:text-5xl">
             {data.title}
           </h1>
-          <p className="mt-4 text-lg text-ink-600">{data.summary}</p>
+          <p className="mt-4 text-lg text-ink-600 dark:text-ink-400">{data.summary}</p>
         </div>
 
-        <div className="mt-10 max-w-3xl space-y-4 text-base leading-relaxed text-ink-700">
+        <div className="mt-10 max-w-3xl space-y-4 text-base leading-relaxed text-ink-700 dark:text-ink-300">
           {data.description.split('\n\n').map((paragraph, i) => (
             <p key={i}>{paragraph}</p>
           ))}
@@ -115,7 +115,7 @@ export default function ServiceDetailPage() {
       </Section>
 
       {others.length > 0 && (
-        <Section className="border-t border-ink-200">
+        <Section className="border-t border-ink-200 dark:border-ink-800">
           <h2 className="text-lg font-semibold tracking-tight">Other services</h2>
           <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {others.map((s) => {
@@ -124,18 +124,18 @@ export default function ServiceDetailPage() {
                 <Link
                   key={s.id}
                   to={`/services/${s.slug}`}
-                  className="group flex flex-col rounded-xl border border-ink-200 bg-white p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:border-ink-300 hover:shadow-md"
+                  className="group flex flex-col rounded-xl border border-ink-200 bg-white p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:border-ink-300 hover:shadow-md dark:border-ink-800 dark:bg-ink-800/50 dark:hover:border-ink-700"
                 >
-                  <span className="inline-flex size-10 items-center justify-center rounded-lg bg-brand-50 text-brand-600">
+                  <span className="inline-flex size-10 items-center justify-center rounded-lg bg-brand-50 text-brand-600 dark:bg-brand-900/40 dark:text-brand-300">
                     <OtherIcon className="size-5" />
                   </span>
                   <h3 className="mt-4 text-base font-semibold tracking-tight">
                     {s.title}
                   </h3>
-                  <p className="mt-2 flex-1 text-sm leading-relaxed text-ink-600">
+                  <p className="mt-2 flex-1 text-sm leading-relaxed text-ink-600 dark:text-ink-400">
                     {s.summary}
                   </p>
-                  <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 group-hover:text-brand-700">
+                  <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 group-hover:text-brand-700 dark:text-brand-400 dark:group-hover:text-brand-300">
                     Learn more
                     <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
                   </span>
@@ -146,7 +146,7 @@ export default function ServiceDetailPage() {
         </Section>
       )}
 
-      <div className="border-t border-ink-200 pt-16 sm:pt-20">
+      <div className="border-t border-ink-200 pt-16 sm:pt-20 dark:border-ink-800">
         <CTABand />
       </div>
     </main>

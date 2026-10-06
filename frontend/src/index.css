@@ -2,6 +2,12 @@
 @import "@fontsource-variable/inter";
 
 /*
+ * Tailwind v4: switch the `dark:` variant from media-query based to
+ * class-based, so the ThemeToggle can control it via <html class="dark">.
+ */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
  * Tailwind v4 CSS-first config.
  * Anything inside @theme becomes a utility (e.g. bg-brand-500, text-ink-900).
  */
@@ -32,7 +38,6 @@
   --color-ink-900: oklch(0.16 0.00 260);
 }
 
-/* Baseline page styles */
 html,
 body,
 #root {
@@ -40,7 +45,12 @@ body,
 }
 
 body {
-  @apply bg-ink-50 text-ink-900 antialiased;
+  @apply bg-ink-50 text-ink-900 antialiased dark:bg-ink-900 dark:text-ink-100;
   font-family: var(--font-sans);
   font-feature-settings: "cv11", "ss01";
+}
+
+/* Smooth theme transitions, but not on first paint. */
+html:not(.no-transition) body {
+  transition: background-color 150ms ease, color 150ms ease;
 }

@@ -12,7 +12,7 @@ export default function CTABand({
 }: Props) {
   return (
     <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-      <div className="relative overflow-hidden rounded-2xl bg-ink-900 px-6 py-12 sm:px-12 sm:py-16">
+      <div className="relative overflow-hidden rounded-2xl bg-ink-900 px-6 py-12 sm:px-12 sm:py-16 dark:border dark:border-ink-800">
         <div
           aria-hidden
           className="pointer-events-none absolute -right-24 -top-24 size-72 rounded-full bg-brand-500/30 blur-3xl"

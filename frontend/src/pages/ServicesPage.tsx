@@ -20,7 +20,7 @@ export default function ServicesPage() {
         />
       </Section>
 
-      <Section className="border-t border-ink-200 pt-10">
+      <Section className="border-t border-ink-200 pt-10 dark:border-ink-800">
         {services.isLoading && (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             <CardSkeleton />
@@ -40,7 +40,7 @@ export default function ServicesPage() {
         )}
 
         {services.data && services.data.length === 0 && (
-          <p className="rounded-xl border border-ink-200 bg-white p-6 text-sm text-ink-600">
+          <p className="rounded-xl border border-ink-200 bg-white p-6 text-sm text-ink-600 dark:border-ink-800 dark:bg-ink-800/50 dark:text-ink-400">
             No services yet.
           </p>
         )}
@@ -54,7 +54,7 @@ export default function ServicesPage() {
         )}
       </Section>
 
-      <div className="border-t border-ink-200 pt-16 sm:pt-20">
+      <div className="border-t border-ink-200 pt-16 sm:pt-20 dark:border-ink-800">
         <CTABand
           title="Not sure which service fits?"
           description="Tell us what you're trying to accomplish and we'll suggest a scope."
