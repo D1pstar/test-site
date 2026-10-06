@@ -34,7 +34,7 @@ export default function AboutPage() {
   usePageTitle('About')
 
   return (
-    <main className="pb-32">
+    <main>
       <Section className="pt-14 sm:pt-20">
         <div className="max-w-3xl">
           <SectionHeader
@@ -44,7 +44,7 @@ export default function AboutPage() {
           />
         </div>
 
-        <dl className="mt-12 grid grid-cols-2 gap-6 border-t border-ink-200 pt-8 sm:grid-cols-4 dark:border-ink-800">
+        <dl className="glass glass-spec mt-12 grid grid-cols-2 gap-6 rounded-3xl border border-white/40 bg-white/40 px-6 py-6 sm:grid-cols-4 dark:border-white/10 dark:bg-white/5">
           {STATS.map((s) => (
             <div key={s.label}>
               <dt className="text-xs uppercase tracking-wider text-ink-500 dark:text-ink-500">
@@ -58,7 +58,7 @@ export default function AboutPage() {
         </dl>
       </Section>
 
-      <Section className="border-t border-ink-200 dark:border-ink-800">
+      <Section className="border-t border-ink-200/60 dark:border-ink-800/60">
         <SectionHeader
           eyebrow="How we work"
           title="Principles we actually follow"
@@ -69,10 +69,12 @@ export default function AboutPage() {
           {VALUES.map((v) => (
             <div
               key={v.title}
-              className="rounded-xl border border-ink-200 bg-white p-6 shadow-sm dark:border-ink-800 dark:bg-ink-800/50"
+              className="glass glass-spec rounded-3xl border border-white/40 bg-white/50 p-6 dark:border-white/10 dark:bg-white/5"
             >
               <div className="flex items-start gap-3">
-                <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-brand-600 dark:text-brand-400" />
+                <span className="inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-brand-600 text-white shadow-md shadow-brand-900/20">
+                  <CheckCircle2 className="size-4.5" />
+                </span>
                 <div>
                   <h3 className="text-base font-semibold tracking-tight">
                     {v.title}
@@ -87,9 +89,9 @@ export default function AboutPage() {
         </div>
       </Section>
 
-      <Section className="border-t border-ink-200 dark:border-ink-800">
-        <div className="grid gap-10 sm:grid-cols-3">
-          <div>
+      <Section className="border-t border-ink-200/60 dark:border-ink-800/60">
+        <div className="grid gap-6 sm:grid-cols-3">
+          <div className="glass glass-spec rounded-3xl border border-white/40 bg-white/40 p-6 dark:border-white/10 dark:bg-white/5">
             <h3 className="text-sm font-semibold uppercase tracking-wider text-brand-600 dark:text-brand-400">
               Design
             </h3>
@@ -98,7 +100,7 @@ export default function AboutPage() {
               handoff docs that keep them honest.
             </p>
           </div>
-          <div>
+          <div className="glass glass-spec rounded-3xl border border-white/40 bg-white/40 p-6 dark:border-white/10 dark:bg-white/5">
             <h3 className="text-sm font-semibold uppercase tracking-wider text-brand-600 dark:text-brand-400">
               Build
             </h3>
@@ -107,7 +109,7 @@ export default function AboutPage() {
               Postgres on the back. Nothing exotic, everything solid.
             </p>
           </div>
-          <div>
+          <div className="glass glass-spec rounded-3xl border border-white/40 bg-white/40 p-6 dark:border-white/10 dark:bg-white/5">
             <h3 className="text-sm font-semibold uppercase tracking-wider text-brand-600 dark:text-brand-400">
               Support
             </h3>
@@ -121,7 +123,7 @@ export default function AboutPage() {
         <div className="mt-12">
           <Link
             to="/contact"
-            className="inline-flex items-center gap-1.5 rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-brand-700"
+            className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-b from-brand-500 to-brand-700 px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-brand-900/30 transition-transform hover:scale-[1.02] active:scale-[0.98]"
           >
             Work with us
             <ArrowRight className="size-4" />
@@ -129,7 +131,7 @@ export default function AboutPage() {
         </div>
       </Section>
 
-      <div className="border-t border-ink-200 pt-16 sm:pt-20 dark:border-ink-800">
+      <div className="pt-16 sm:pt-20">
         <CTABand />
       </div>
     </main>

@@ -16,8 +16,8 @@ export default function NotFoundPage() {
     <main>
       <Section className="pt-20 sm:pt-28">
         <div className="mx-auto max-w-2xl text-center">
-          <span className="inline-flex size-14 items-center justify-center rounded-2xl bg-brand-50 text-brand-600 dark:bg-brand-900/40 dark:text-brand-300">
-            <Compass className="size-7" />
+          <span className="inline-flex size-16 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-brand-700 text-white shadow-lg shadow-brand-900/30">
+            <Compass className="size-8" />
           </span>
           <p className="mt-6 text-sm font-semibold uppercase tracking-widest text-brand-600 dark:text-brand-400">
             404 — Not found
@@ -33,7 +33,7 @@ export default function NotFoundPage() {
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <Link
               to="/"
-              className="inline-flex items-center gap-1.5 rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-brand-700"
+              className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-b from-brand-500 to-brand-700 px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-brand-900/30 transition-transform hover:scale-[1.02] active:scale-[0.98]"
             >
               <Home className="size-4" />
               Back home
@@ -41,14 +41,14 @@ export default function NotFoundPage() {
             <button
               type="button"
               onClick={() => window.history.back()}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-ink-200 bg-white px-4 py-2.5 text-sm font-medium text-ink-700 hover:border-ink-300 dark:border-ink-700 dark:bg-ink-800/50 dark:text-ink-200 dark:hover:border-ink-600"
+              className="glass glass-spec inline-flex items-center gap-1.5 rounded-full border border-white/50 bg-white/40 px-5 py-2.5 text-sm font-medium text-ink-800 transition-all hover:bg-white/60 dark:border-white/10 dark:bg-white/5 dark:text-ink-200 dark:hover:bg-white/10"
             >
               <ArrowLeft className="size-4" />
               Go back
             </button>
           </div>
 
-          <div className="mt-12 border-t border-ink-200 pt-8 dark:border-ink-800">
+          <div className="mt-12 border-t border-ink-200/60 pt-8 dark:border-ink-800/60">
             <p className="text-xs font-semibold uppercase tracking-widest text-ink-500 dark:text-ink-500">
               Or try one of these
             </p>
@@ -57,7 +57,7 @@ export default function NotFoundPage() {
                 <li key={l.to}>
                   <Link
                     to={l.to}
-                    className="inline-flex items-center rounded-full border border-ink-200 bg-white px-3 py-1 text-sm font-medium text-ink-700 hover:border-ink-300 hover:text-ink-900 dark:border-ink-700 dark:bg-ink-800/50 dark:text-ink-200 dark:hover:border-ink-600 dark:hover:text-ink-100"
+                    className="glass-subtle inline-flex items-center rounded-full border border-white/50 bg-white/40 px-4 py-1.5 text-sm font-medium text-ink-700 transition-all hover:bg-white/60 dark:border-white/10 dark:bg-white/5 dark:text-ink-200 dark:hover:bg-white/10"
                   >
                     {l.label}
                   </Link>

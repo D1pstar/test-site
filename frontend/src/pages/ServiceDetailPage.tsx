@@ -39,7 +39,7 @@ export default function ServiceDetailPage() {
         <Section className="pt-14 sm:pt-20">
           <Link
             to="/services"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-ink-600 hover:text-ink-900 dark:text-ink-400 dark:hover:text-ink-100"
+            className="glass-subtle inline-flex items-center gap-1.5 rounded-full border border-white/50 bg-white/40 px-3.5 py-1.5 text-sm font-medium text-ink-700 transition-all hover:bg-white/60 dark:border-white/10 dark:bg-white/5 dark:text-ink-200 dark:hover:bg-white/10"
           >
             <ArrowLeft className="size-4" />
             All services
@@ -55,7 +55,7 @@ export default function ServiceDetailPage() {
               </p>
               <Link
                 to="/services"
-                className="mt-6 inline-flex items-center gap-1.5 rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-brand-700"
+                className="mt-6 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-b from-brand-500 to-brand-700 px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-brand-900/30 transition-transform hover:scale-[1.02] active:scale-[0.98]"
               >
                 Browse all services
               </Link>
@@ -81,14 +81,14 @@ export default function ServiceDetailPage() {
       <Section className="pt-14 sm:pt-20">
         <Link
           to="/services"
-          className="inline-flex items-center gap-1.5 text-sm font-medium text-ink-600 hover:text-ink-900 dark:text-ink-400 dark:hover:text-ink-100"
+          className="glass-subtle inline-flex items-center gap-1.5 rounded-full border border-white/50 bg-white/40 px-3.5 py-1.5 text-sm font-medium text-ink-700 transition-all hover:bg-white/60 dark:border-white/10 dark:bg-white/5 dark:text-ink-200 dark:hover:bg-white/10"
         >
           <ArrowLeft className="size-4" />
           All services
         </Link>
 
         <div className="mt-8 max-w-3xl">
-          <span className="inline-flex size-12 items-center justify-center rounded-xl bg-brand-50 text-brand-600 dark:bg-brand-900/40 dark:text-brand-300">
+          <span className="inline-flex size-12 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-400 to-brand-600 text-white shadow-md shadow-brand-900/20">
             <Icon className="size-6" />
           </span>
           <h1 className="mt-6 text-4xl font-semibold tracking-tight sm:text-5xl">
@@ -97,16 +97,18 @@ export default function ServiceDetailPage() {
           <p className="mt-4 text-lg text-ink-600 dark:text-ink-400">{data.summary}</p>
         </div>
 
-        <div className="mt-10 max-w-3xl space-y-4 text-base leading-relaxed text-ink-700 dark:text-ink-300">
-          {data.description.split('\n\n').map((paragraph, i) => (
-            <p key={i}>{paragraph}</p>
-          ))}
+        <div className="glass glass-spec mt-10 max-w-3xl rounded-3xl border border-white/40 bg-white/40 p-8 dark:border-white/10 dark:bg-white/5">
+          <div className="space-y-4 text-base leading-relaxed text-ink-700 dark:text-ink-300">
+            {data.description.split('\n\n').map((paragraph, i) => (
+              <p key={i}>{paragraph}</p>
+            ))}
+          </div>
         </div>
 
         <div className="mt-10">
           <Link
             to="/contact"
-            className="inline-flex items-center gap-1.5 rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-brand-700"
+            className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-b from-brand-500 to-brand-700 px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-brand-900/30 transition-transform hover:scale-[1.02] active:scale-[0.98]"
           >
             Start a project
             <ArrowRight className="size-4" />
@@ -115,7 +117,7 @@ export default function ServiceDetailPage() {
       </Section>
 
       {others.length > 0 && (
-        <Section className="border-t border-ink-200 dark:border-ink-800">
+        <Section className="border-t border-ink-200/60 dark:border-ink-800/60">
           <h2 className="text-lg font-semibold tracking-tight">Other services</h2>
           <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {others.map((s) => {
@@ -124,9 +126,9 @@ export default function ServiceDetailPage() {
                 <Link
                   key={s.id}
                   to={`/services/${s.slug}`}
-                  className="group flex flex-col rounded-xl border border-ink-200 bg-white p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:border-ink-300 hover:shadow-md dark:border-ink-800 dark:bg-ink-800/50 dark:hover:border-ink-700"
+                  className="glass glass-spec group flex flex-col rounded-3xl border border-white/40 bg-white/50 p-6 transition-all hover:-translate-y-0.5 hover:bg-white/60 dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10"
                 >
-                  <span className="inline-flex size-10 items-center justify-center rounded-lg bg-brand-50 text-brand-600 dark:bg-brand-900/40 dark:text-brand-300">
+                  <span className="inline-flex size-10 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-400 to-brand-600 text-white shadow-md shadow-brand-900/20">
                     <OtherIcon className="size-5" />
                   </span>
                   <h3 className="mt-4 text-base font-semibold tracking-tight">
@@ -146,7 +148,7 @@ export default function ServiceDetailPage() {
         </Section>
       )}
 
-      <div className="border-t border-ink-200 pt-16 sm:pt-20 dark:border-ink-800">
+      <div className="pt-16 sm:pt-20">
         <CTABand />
       </div>
     </main>

@@ -40,7 +40,6 @@ body {
   @apply bg-ink-50 text-ink-900 antialiased dark:bg-ink-900 dark:text-ink-100;
   font-family: var(--font-sans);
   font-feature-settings: "cv11", "ss01";
-  /* The animated gradient sits behind everything; body stays flat. */
   background-attachment: fixed;
 }
 
@@ -49,22 +48,9 @@ html:not(.no-transition) body {
 }
 
 /* ===========================================================
-   LIQUID GLASS UTILITIES
-   ===========================================================
+   LIQUID GLASS — BASE SURFACES
+   =========================================================== */
 
-   Apple's Liquid Glass is built from four stacked layers:
-
-     1. A translucent tint (different per light/dark)
-     2. backdrop-filter: blur + saturate (samples what's behind)
-     3. A thin bright rim on the top-left, dark rim on the bottom-right
-        (light catching the physical edge)
-     4. A soft specular sheet that shifts on interaction
-
-   Tailwind utilities handle (1) via bg-*  and (2) via backdrop-*.
-   The rim, inner shadow, and specular sheet need custom classes below.
-*/
-
-/* Base glass surface. Apply alongside a translucent bg-* utility. */
 @utility glass {
   position: relative;
   backdrop-filter: blur(20px) saturate(180%);
@@ -99,9 +85,6 @@ html:not(.no-transition) body {
     0 6px 18px -8px rgb(15 23 42 / 0.14);
 }
 
-/* Specular sheet: a soft diagonal highlight that reads as light glancing
-   off a curved surface. Meant to sit on top of a glass element as a
-   pseudo-element. Add `glass-spec` alongside `glass`. */
 @utility glass-spec {
   overflow: hidden;
 }
@@ -132,8 +115,6 @@ html:not(.no-transition) body {
   }
 }
 
-/* Dark-mode override: the rim becomes a low-alpha white edge and the tint
-   is deeper. The specular sheet dims down. */
 .dark .glass {
   box-shadow:
     inset 0 1px 0 0 rgb(255 255 255 / 0.14),
@@ -172,35 +153,65 @@ html:not(.no-transition) body {
     );
 }
 
-/* The animated mesh background. Two large radial gradients that slowly
-   drift, giving the glass something to sample. Sits behind everything via
-   a fixed positioned pseudo layer on body. */
+/* ===========================================================
+   LIQUID GLASS — METABALL CONNECTION
+   ===========================================================
+
+   When two glass panels get close, Apple's Liquid Glass merges them
+   into one continuous surface — the shared edge softens, rims blend,
+   the pair reads as a single drop.
+
+   We can't do true fluid simulation in CSS, but the classic "goo"
+   filter chain approximates it well:
+
+     1. Blur the whole group  — softens every edge
+     2. Contrast the result   — re-hardens edges, and pulls any two
+                                blurred shapes together at their
+                                nearest points (this is the merge)
+     3. Composit onto itself  — restores fill density
+
+   Apply to a PARENT that wraps the glass children. Children keep
+   their own glass / glass-spec classes; the parent just adds the
+   filter chain. Any two children that touch or come within ~8px
+   will visually merge.
+   =========================================================== */
+
+@utility glass-goo {
+  position: relative;
+  isolation: isolate;
+  filter: url(#glass-goo-filter);
+}
+
+/* Because `filter` on the parent would also blur its children's text
+   and icons, we offset that by rendering the group inside an SVG that
+   only contains the filter, then re-hardening. The `isolation: isolate`
+   above keeps the filter from bleeding into siblings. */
+
+@utility glass-goo-fallback {
+  /* Fallback for browsers without SVG filter support — plain blur + contrast */
+  filter: blur(0.5px) contrast(1.2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glass-goo {
+    filter: none;
+  }
+}
+
+/* ===========================================================
+   AMBIENT BACKGROUND
+   =========================================================== */
+
 @utility ambient-bg {
   position: fixed;
   inset: 0;
   z-index: -1;
   pointer-events: none;
   background:
-    radial-gradient(
-      60rem 60rem at 15% -10%,
-      rgb(122 89 255 / 0.35),
-      transparent 60%
-    ),
-    radial-gradient(
-      55rem 55rem at 100% 20%,
-      rgb(80 200 255 / 0.28),
-      transparent 60%
-    ),
-    radial-gradient(
-      60rem 60rem at 20% 110%,
-      rgb(255 140 200 / 0.24),
-      transparent 60%
-    ),
-    radial-gradient(
-      50rem 50rem at 90% 110%,
-      rgb(140 255 200 / 0.18),
-      transparent 60%
-    );
+    radial-gradient(60rem 60rem at 15% -10%, rgb(122 89 255 / 0.35), transparent 60%),
+    radial-gradient(55rem 55rem at 100% 20%, rgb(80 200 255 / 0.28), transparent 60%),
+    radial-gradient(60rem 60rem at 20% 110%, rgb(255 140 200 / 0.24), transparent 60%),
+    radial-gradient(50rem 50rem at 90% 110%, rgb(140 255 200 / 0.18), transparent 60%);
   animation: ambient-drift 40s ease-in-out infinite alternate;
   filter: blur(20px);
 }
@@ -219,24 +230,8 @@ html:not(.no-transition) body {
 
 .dark .ambient-bg {
   background:
-    radial-gradient(
-      60rem 60rem at 15% -10%,
-      rgb(90 60 200 / 0.4),
-      transparent 60%
-    ),
-    radial-gradient(
-      55rem 55rem at 100% 20%,
-      rgb(30 90 200 / 0.35),
-      transparent 60%
-    ),
-    radial-gradient(
-      60rem 60rem at 20% 110%,
-      rgb(140 40 120 / 0.3),
-      transparent 60%
-    ),
-    radial-gradient(
-      50rem 50rem at 90% 110%,
-      rgb(40 120 120 / 0.22),
-      transparent 60%
-    );
+    radial-gradient(60rem 60rem at 15% -10%, rgb(90 60 200 / 0.4), transparent 60%),
+    radial-gradient(55rem 55rem at 100% 20%, rgb(30 90 200 / 0.35), transparent 60%),
+    radial-gradient(60rem 60rem at 20% 110%, rgb(140 40 120 / 0.3), transparent 60%),
+    radial-gradient(50rem 50rem at 90% 110%, rgb(40 120 120 / 0.22), transparent 60%);
 }
