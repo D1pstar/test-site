@@ -1,6 +1,6 @@
 """Run once on every deploy before the server starts.
 
-1. Fresh database -> create all tables and mark migrations as applied.
+1. Fresh (or half-initialised) database -> create all tables and mark migrations as applied.
    Existing database -> apply pending migrations.
 2. If ADMIN_USERNAME and ADMIN_PASSWORD are set and that admin does not exist,
    create it (never overwrites an existing account). Remove ADMIN_PASSWORD afterwards.
@@ -10,7 +10,7 @@ import os
 import subprocess
 import sys
 
-from sqlalchemy import inspect, select
+from sqlalchemy import inspect, select, text
 
 import app.models  # noqa: F401  (registers tables)
 from app.database import Base, SessionLocal, engine
@@ -22,7 +22,14 @@ def run(*args: str) -> None:
     subprocess.run([sys.executable, "-m", "alembic", *args], check=True)
 
 
-if "alembic_version" in inspect(engine).get_table_names():
+def has_migration_state() -> bool:
+    if "alembic_version" not in inspect(engine).get_table_names():
+        return False
+    with engine.connect() as c:
+        return c.execute(text("SELECT COUNT(*) FROM alembic_version")).scalar_one() > 0
+
+
+if has_migration_state():
     run("upgrade", "head")
 else:
     Base.metadata.create_all(engine)
