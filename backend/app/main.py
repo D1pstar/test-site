@@ -1,4 +1,7 @@
-from fastapi import FastAPI
+from pathlib import Path
+
+from fastapi import FastAPI, HTTPException
+from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
@@ -44,6 +47,22 @@ if is_dev:
     app.include_router(seed.router)
 
 
-@app.get("/")
-def root() -> dict[str, str]:
-    return {"message": f"{settings.app_name} API"}
+_static = Path(settings.static_dir).resolve()
+_index = _static / "index.html"
+
+if _index.is_file():
+    # Serve the built website. Registered last, so every /api route wins.
+    @app.get("/{path:path}", include_in_schema=False)
+    def website(path: str) -> FileResponse:
+        if path == "api" or path.startswith("api/"):
+            raise HTTPException(status_code=404, detail="Not found")
+        target = (_static / path).resolve()
+        if path and target.is_file() and _static in target.parents:
+            headers = {"Cache-Control": "public, max-age=31536000, immutable"} if path.startswith("assets/") else {}
+            return FileResponse(target, headers=headers)
+        return FileResponse(_index, headers={"Cache-Control": "no-cache"})  # single-page app fallback
+else:
+
+    @app.get("/")
+    def root() -> dict[str, str]:
+        return {"message": f"{settings.app_name} API"}

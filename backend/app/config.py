@@ -42,6 +42,10 @@ class Settings(BaseSettings):
     upload_dir: str = Field(default="uploads", alias="UPLOAD_DIR")
     max_upload_mb: int = Field(default=5, alias="MAX_UPLOAD_MB")
 
+    # Folder with the built frontend (vite build output). When it exists, the API
+    # also serves the website, so one service hosts everything on one domain.
+    static_dir: str = Field(default="static", alias="STATIC_DIR")
+
     @model_validator(mode="after")
     def _require_real_secret_in_production(self) -> "Settings":
         if self.app_env == "production" and (

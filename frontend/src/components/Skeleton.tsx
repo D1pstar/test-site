@@ -1,21 +1,13 @@
-type Props = { className?: string }
+type Props = {
+  className?: string
+}
 
 export function Skeleton({ className = '' }: Props) {
   return (
     <div
-      className={`relative overflow-hidden rounded-2xl ${className}`}
-      style={{ background: 'color-mix(in srgb, currentColor 7%, transparent)' }}
+      className={`animate-pulse rounded-2xl bg-ink-900/[0.06] dark:bg-white/[0.06] ${className}`}
       aria-hidden
-    >
-      <div
-        className="absolute inset-0 animate-shimmer"
-        style={{
-          background:
-            'linear-gradient(90deg, transparent, color-mix(in srgb, currentColor 9%, transparent), transparent)',
-          backgroundSize: '200% 100%',
-        }}
-      />
-    </div>
+    />
   )
 }
 
