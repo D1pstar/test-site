@@ -3,6 +3,11 @@
 - `backend/` FastAPI API (SQLite)
 - `Dockerfile` builds both into one service (used for Railway)
 
+## New client? Use the generator
+    ./sitegen.sh
+Opens a local tool (never deployed): describe the client, copy the prompt into any AI, paste the reply back,
+preview, and it writes a ready-to-deploy project folder with the content already in it. See tools/sitegen/README.md.
+
 ## Local development
 Backend (in backend/):
   uv sync

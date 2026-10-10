@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react'
-import { ArrowDown, ArrowUp, ChevronDown, ChevronRight, Copy, Eye, EyeOff, Plus, Trash2 } from 'lucide-react'
+import { ArrowDown, ArrowUp, ChevronDown, ChevronRight, Copy, Eye, EyeOff, PanelRightClose, PanelRightOpen, Plus, Settings2, Trash2 } from 'lucide-react'
 import { FieldForm, type Obj } from './fields'
 import { BLOCK_SPECS, BLOCK_TYPES, newBlock, summarize } from './block-specs'
 import Modal from './Modal'
@@ -15,6 +15,8 @@ export default function PagesTab() {
   const [openBlock, setOpenBlock] = useState<string | null>(null)
   const [adding, setAdding] = useState<number | null>(null) // insert index
   const [newPage, setNewPage] = useState(false)
+  const [settingsOpen, setSettingsOpen] = useState(false)
+  const [showPreview, setShowPreview] = useState(true)
 
   const page = content.pages.find((p) => p.id === pageId) ?? content.pages[0]
 
@@ -70,7 +72,7 @@ export default function PagesTab() {
   const pathProblem = pathError(page.path, otherPaths)
 
   return (
-    <div className="grid gap-6 xl:grid-cols-2">
+    <div className={showPreview ? 'grid gap-6 xl:grid-cols-2' : 'mx-auto max-w-3xl'}>
       <div className="space-y-6">
         {/* Page picker */}
         <div className={panel}>
@@ -92,16 +94,17 @@ export default function PagesTab() {
             </button>
             <button
               type="button"
-              onClick={deletePage}
-              disabled={page.path === '/'}
-              title={page.path === '/' ? 'The home page can’t be deleted' : 'Delete this page'}
-              className={dangerBtn}
+              onClick={() => setSettingsOpen(!settingsOpen)}
+              aria-expanded={settingsOpen}
+              aria-controls="page-settings"
+              className={smallBtn}
             >
-              <Trash2 className="size-4" /> Delete page
+              <Settings2 className="size-4" /> Page settings
+              <ChevronDown className={`size-4 transition-transform ${settingsOpen ? 'rotate-180' : ''}`} />
             </button>
           </div>
 
-          <div className="mt-5 grid gap-4 sm:grid-cols-2">
+          <div id="page-settings" hidden={!settingsOpen} className="mt-5 grid gap-4 border-t border-ink-200 pt-5 sm:grid-cols-2 dark:border-white/10">
             <div>
               <label htmlFor="page-title" className={labelClass}>
                 Page name
@@ -150,14 +153,31 @@ export default function PagesTab() {
               />
               <p className={helpClass}>One or two sentences shown by Google and when the link is shared.</p>
             </div>
+            <div className="sm:col-span-2">
+              <button
+                type="button"
+                onClick={deletePage}
+                disabled={page.path === '/'}
+                title={page.path === '/' ? 'The home page can’t be deleted' : 'Delete this page'}
+                className={dangerBtn}
+              >
+                <Trash2 className="size-4" /> Delete this page
+              </button>
+            </div>
           </div>
         </div>
 
         {/* Blocks */}
         <div>
-          <h2 className="text-sm font-semibold uppercase tracking-widest text-ink-500">
-            Sections on this page ({page.blocks.length})
-          </h2>
+          <div className="flex items-center justify-between gap-3">
+            <h2 className="text-sm font-semibold uppercase tracking-widest text-ink-500">
+              Sections on this page ({page.blocks.length})
+            </h2>
+            <button type="button" onClick={() => setShowPreview(!showPreview)} className={`${smallBtn} hidden xl:inline-flex`}>
+              {showPreview ? <PanelRightClose className="size-4" /> : <PanelRightOpen className="size-4" />}
+              {showPreview ? 'Hide preview' : 'Show preview'}
+            </button>
+          </div>
           <ol className="mt-3 space-y-2">
             <InsertRow onClick={() => setAdding(0)} />
             {page.blocks.map((b, i) => (
@@ -185,7 +205,7 @@ export default function PagesTab() {
         </div>
       </div>
 
-      <div className="hidden xl:block">
+      <div className={showPreview ? 'hidden xl:block' : 'hidden'}>
         <div className="sticky top-24 h-[calc(100vh-8rem)]">
           <PreviewFrame content={content} path={page.path} onNavigate={onNavigate} />
         </div>

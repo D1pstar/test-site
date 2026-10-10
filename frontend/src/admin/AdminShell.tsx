@@ -1,28 +1,29 @@
 import { useSearchParams } from 'react-router-dom'
-import { ExternalLink, Image as ImageIcon, LayoutTemplate, LogOut, MessageSquare, Navigation, Palette, Wrench } from 'lucide-react'
+import { ExternalLink, Image as ImageIcon, LayoutTemplate, LogOut, MessageSquare, Palette, Wrench } from 'lucide-react'
 import ThemeToggle from '../components/ThemeToggle'
 import { useAdminLogout, useAdminMessages } from '../hooks/useAdmin'
 import { EditorGate, EditorProvider } from './editor'
 import DraftBar from './DraftBar'
 import MessagesTab from './MessagesTab'
 import PagesTab from './PagesTab'
-import ThemeTab from './ThemeTab'
-import NavFooterTab from './NavFooterTab'
+import DesignTab from './DesignTab'
 import ServicesTab from './ServicesTab'
 import MediaTab from './MediaTab'
 
 const TABS = [
   { id: 'messages', label: 'Messages', icon: MessageSquare },
   { id: 'pages', label: 'Pages', icon: LayoutTemplate },
-  { id: 'theme', label: 'Theme', icon: Palette },
-  { id: 'nav', label: 'Navigation & footer', icon: Navigation },
+  { id: 'design', label: 'Design', icon: Palette },
   { id: 'services', label: 'Services', icon: Wrench },
   { id: 'media', label: 'Images', icon: ImageIcon },
 ] as const
 type TabId = (typeof TABS)[number]['id']
 
 // Tabs that edit the draft/publish document.
-const DRAFT_TABS: TabId[] = ['pages', 'theme', 'nav']
+const DRAFT_TABS: TabId[] = ['pages', 'design']
+
+// Old links used ?tab=theme and ?tab=nav.
+const LEGACY: Record<string, { tab: TabId; sub?: string }> = { theme: { tab: 'design', sub: 'theme' }, nav: { tab: 'design', sub: 'nav' } }
 
 export default function AdminShell({ username }: { username: string }) {
   return (
@@ -35,7 +36,8 @@ export default function AdminShell({ username }: { username: string }) {
 
 function Shell({ username }: { username: string }) {
   const [params, setParams] = useSearchParams()
-  const requested = params.get('tab') as TabId | null
+  const raw = params.get('tab')
+  const requested = (raw && LEGACY[raw]?.tab) || (raw as TabId | null)
   const tab: TabId = TABS.some((t) => t.id === requested) ? (requested as TabId) : 'messages'
   const logout = useAdminLogout()
   const messages = useAdminMessages(true)
@@ -93,8 +95,7 @@ function Shell({ username }: { username: string }) {
           <EditorGate>
             <DraftBar />
             {tab === 'pages' && <PagesTab />}
-            {tab === 'theme' && <ThemeTab />}
-            {tab === 'nav' && <NavFooterTab />}
+            {tab === 'design' && <DesignTab />}
           </EditorGate>
         ) : (
           <>

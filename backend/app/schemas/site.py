@@ -479,3 +479,4 @@ class ServiceWrite(Strict):
     description: Annotated[str, StringConstraints(max_length=10000)]
     icon: Annotated[str, StringConstraints(min_length=1, max_length=40, pattern=r"^[A-Za-z0-9]+$")]
     sort_order: Annotated[int, Field(ge=0, le=10000)] = 0
+
