@@ -1,18 +1,37 @@
 import { Link, useParams } from 'react-router-dom'
-import { ArrowLeft, ArrowRight } from 'lucide-react'
+import { ArrowLeft, ArrowRight, CheckCircle2 } from 'lucide-react'
 import { Section } from '../components/Section'
 import CTABand from '../components/CTABand'
+import Reveal from '../components/Reveal'
 import { Skeleton } from '../components/Skeleton'
 import ErrorState from '../components/ErrorState'
+import ServiceCard from '../components/ServiceCard'
 import { getIcon } from '../lib/icons'
 import { useService, useServices } from '../hooks/useServices'
 import { usePageTitle } from '../hooks/usePageTitle'
+
+const BackLink = () => (
+  <Link
+    to="/services"
+    className="inline-flex items-center gap-1.5 text-sm font-medium transition-colors"
+    style={{ color: 'var(--site-muted)' }}
+  >
+    <ArrowLeft className="size-4" />
+    All services
+  </Link>
+)
+
+const INCLUDED = [
+  'A dedicated senior designer and engineer',
+  'Weekly progress demos and open communication',
+  'Accessible, responsive, performance-tuned output',
+  'A support window after launch',
+]
 
 export default function ServiceDetailPage() {
   const { slug } = useParams<{ slug: string }>()
   const service = useService(slug)
   const allServices = useServices()
-
   usePageTitle(service.data?.title ?? 'Service')
 
   const others = (allServices.data ?? []).filter((s) => s.slug !== slug).slice(0, 3)
@@ -20,11 +39,11 @@ export default function ServiceDetailPage() {
   if (service.isLoading) {
     return (
       <main>
-        <Section className="pt-14 sm:pt-20">
+        <Section className="pt-20 sm:pt-28">
           <Skeleton className="h-4 w-24" />
-          <Skeleton className="mt-6 h-10 w-2/3" />
+          <Skeleton className="mt-8 size-14" />
+          <Skeleton className="mt-6 h-14 w-2/3" />
           <Skeleton className="mt-4 h-4 w-full max-w-2xl" />
-          <Skeleton className="mt-2 h-4 w-full max-w-xl" />
         </Section>
       </main>
     )
@@ -33,39 +52,23 @@ export default function ServiceDetailPage() {
   if (service.isError) {
     const status = (service.error as { status?: number }).status
     const isNotFound = status === 404
-
     return (
       <main>
-        <Section className="pt-14 sm:pt-20">
-          <Link
-            to="/services"
-            className="glass-subtle inline-flex items-center gap-1.5 rounded-full border border-white/50 bg-white/40 px-3.5 py-1.5 text-sm font-medium text-ink-700 transition-all hover:bg-white/60 dark:border-white/10 dark:bg-white/5 dark:text-ink-200 dark:hover:bg-white/10"
-          >
-            <ArrowLeft className="size-4" />
-            All services
-          </Link>
-
+        <Section className="pt-20 sm:pt-28">
+          <BackLink />
           {isNotFound ? (
             <div className="mt-8">
-              <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+              <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl" style={{ color: 'var(--site-text)' }}>
                 Service not found
               </h1>
-              <p className="mt-3 text-ink-600 dark:text-ink-400">
+              <p className="mt-3" style={{ color: 'var(--site-muted)' }}>
                 We couldn't find a service with that name.
               </p>
-              <Link
-                to="/services"
-                className="mt-6 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-b from-brand-500 to-brand-700 px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-brand-900/30 transition-transform hover:scale-[1.02] active:scale-[0.98]"
-              >
-                Browse all services
-              </Link>
+              <Link to="/services" className="btn-primary mt-6">Browse all services</Link>
             </div>
           ) : (
             <div className="mt-8">
-              <ErrorState
-                title="Couldn’t load this service"
-                message={(service.error as Error).message}
-              />
+              <ErrorState title="Couldn’t load this service" message={(service.error as Error).message} />
             </div>
           )}
         </Section>
@@ -78,78 +81,95 @@ export default function ServiceDetailPage() {
 
   return (
     <main>
-      <Section className="pt-14 sm:pt-20">
-        <Link
-          to="/services"
-          className="glass-subtle inline-flex items-center gap-1.5 rounded-full border border-white/50 bg-white/40 px-3.5 py-1.5 text-sm font-medium text-ink-700 transition-all hover:bg-white/60 dark:border-white/10 dark:bg-white/5 dark:text-ink-200 dark:hover:bg-white/10"
-        >
-          <ArrowLeft className="size-4" />
-          All services
-        </Link>
-
-        <div className="mt-8 max-w-3xl">
-          <span className="inline-flex size-12 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-400 to-brand-600 text-white shadow-md shadow-brand-900/20">
-            <Icon className="size-6" />
-          </span>
-          <h1 className="mt-6 text-4xl font-semibold tracking-tight sm:text-5xl">
-            {data.title}
-          </h1>
-          <p className="mt-4 text-lg text-ink-600 dark:text-ink-400">{data.summary}</p>
+      <div className="relative isolate overflow-hidden">
+        <div aria-hidden className="absolute inset-0 -z-10">
+          <div className="grid-bg absolute inset-0 h-[32rem]" style={{ color: 'var(--site-text)' }} />
+          <div
+            className="absolute inset-x-0 top-0 mx-auto h-[28rem] max-w-4xl rounded-full opacity-60 blur-3xl animate-pulse-glow"
+            style={{ background: 'radial-gradient(50% 50% at 40% 40%, var(--site-glow), transparent 70%)' }}
+          />
         </div>
 
-        <div className="glass glass-spec mt-10 max-w-3xl rounded-3xl border border-white/40 bg-white/40 p-8 dark:border-white/10 dark:bg-white/5">
-          <div className="space-y-4 text-base leading-relaxed text-ink-700 dark:text-ink-300">
-            {data.description.split('\n\n').map((paragraph, i) => (
-              <p key={i}>{paragraph}</p>
-            ))}
+        <Section className="pb-10 pt-16 sm:pt-24">
+          <BackLink />
+          <div className="animate-fade-up mt-8 max-w-3xl">
+            <span
+              className="inline-flex size-14 items-center justify-center rounded-2xl text-white"
+              style={{
+                background: 'var(--site-gradient)',
+                boxShadow: '0 14px 30px -12px var(--site-glow), inset 0 1px 0 0 rgb(255 255 255 / 0.35)',
+              }}
+            >
+              <Icon className="size-7" />
+            </span>
+            <h1
+              className="mt-6 text-4xl font-semibold tracking-tight text-balance sm:text-6xl sm:leading-[1.05]"
+              style={{ color: 'var(--site-text)' }}
+            >
+              {data.title}
+            </h1>
+            <p className="mt-6 text-lg leading-relaxed" style={{ color: 'var(--site-muted)' }}>
+              {data.summary}
+            </p>
           </div>
-        </div>
+        </Section>
+      </div>
 
-        <div className="mt-10">
-          <Link
-            to="/contact"
-            className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-b from-brand-500 to-brand-700 px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-brand-900/30 transition-transform hover:scale-[1.02] active:scale-[0.98]"
-          >
-            Start a project
-            <ArrowRight className="size-4" />
-          </Link>
+      <Section className="pt-8 sm:pt-10">
+        <div className="grid gap-8 lg:grid-cols-3">
+          <Reveal className="lg:col-span-2">
+            <div className="card p-8 sm:p-10">
+              <div className="space-y-6 text-base leading-relaxed" style={{ color: 'var(--site-text)', opacity: 0.88 }}>
+                {data.description.split('\n\n').map((paragraph, i) => (
+                  <p key={i} className={i === 0 ? 'first-letter:float-left first-letter:mr-3 first-letter:mt-1 first-letter:text-6xl first-letter:font-semibold first-letter:leading-[0.85]' : ''}>
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+            </div>
+          </Reveal>
+
+          <Reveal delay={100}>
+            <aside className="glass glass-spec sticky top-24 rounded-3xl p-7">
+              <h2 className="text-xs font-semibold uppercase tracking-[0.16em]" style={{ color: 'var(--site-muted)' }}>
+                What's included
+              </h2>
+              <ul className="mt-5 space-y-4">
+                {INCLUDED.map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-sm" style={{ color: 'var(--site-text)' }}>
+                    <CheckCircle2 className="mt-0.5 size-5 shrink-0" style={{ color: 'var(--site-primary)' }} />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <Link to="/contact" className="btn-primary mt-7 w-full">
+                Start a project
+                <ArrowRight className="size-4" />
+              </Link>
+            </aside>
+          </Reveal>
         </div>
       </Section>
 
       {others.length > 0 && (
-        <Section className="border-t border-ink-200/60 dark:border-ink-800/60">
-          <h2 className="text-lg font-semibold tracking-tight">Other services</h2>
-          <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {others.map((s) => {
-              const OtherIcon = getIcon(s.icon)
-              return (
-                <Link
-                  key={s.id}
-                  to={`/services/${s.slug}`}
-                  className="glass glass-spec group flex flex-col rounded-3xl border border-white/40 bg-white/50 p-6 transition-all hover:-translate-y-0.5 hover:bg-white/60 dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10"
-                >
-                  <span className="inline-flex size-10 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-400 to-brand-600 text-white shadow-md shadow-brand-900/20">
-                    <OtherIcon className="size-5" />
-                  </span>
-                  <h3 className="mt-4 text-base font-semibold tracking-tight">
-                    {s.title}
-                  </h3>
-                  <p className="mt-2 flex-1 text-sm leading-relaxed text-ink-600 dark:text-ink-400">
-                    {s.summary}
-                  </p>
-                  <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 group-hover:text-brand-700 dark:text-brand-400 dark:group-hover:text-brand-300">
-                    Learn more
-                    <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
-                  </span>
-                </Link>
-              )
-            })}
-          </div>
-        </Section>
+        <div className="border-t" style={{ borderColor: 'var(--site-border)' }}>
+          <Section>
+            <h2 className="text-2xl font-semibold tracking-tight" style={{ color: 'var(--site-text)' }}>Other services</h2>
+            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {others.map((s, i) => (
+                <Reveal key={s.id} delay={i * 80}>
+                  <ServiceCard service={s} />
+                </Reveal>
+              ))}
+            </div>
+          </Section>
+        </div>
       )}
 
-      <div className="pt-16 sm:pt-20">
-        <CTABand />
+      <div className="pt-4 sm:pt-8">
+        <Reveal>
+          <CTABand />
+        </Reveal>
       </div>
     </main>
   )

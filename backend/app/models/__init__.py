@@ -5,14 +5,20 @@ on ``Base.metadata`` before autogenerate runs. Add new model imports
 below as they are created.
 """
 
+from app.models.admin_user import AdminUser
 from app.models.contact import ContactMessage
+from app.models.media import Media
 from app.models.project import Project
 from app.models.service import Service
+from app.models.site_content import SiteContentRow
 from app.models.testimonial import Testimonial
 
 __all__ = [
+    "AdminUser",
     "ContactMessage",
+    "Media",
     "Project",
     "Service",
+    "SiteContentRow",
     "Testimonial",
 ]

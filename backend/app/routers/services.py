@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.models import Service
-from app.schemas import ServiceCreate, ServiceRead
+from app.schemas import ServiceRead
 
 router = APIRouter(prefix="/api/services", tags=["services"])
 
@@ -20,13 +20,4 @@ def get_service(slug: str, db: Session = Depends(get_db)) -> Service:
     service = db.scalar(select(Service).where(Service.slug == slug))
     if service is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="service not found")
-    return service
-
-
-@router.post("", response_model=ServiceRead, status_code=status.HTTP_201_CREATED)
-def create_service(payload: ServiceCreate, db: Session = Depends(get_db)) -> Service:
-    service = Service(**payload.model_dump())
-    db.add(service)
-    db.commit()
-    db.refresh(service)
     return service

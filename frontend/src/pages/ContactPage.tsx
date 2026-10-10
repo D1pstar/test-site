@@ -1,37 +1,45 @@
 import { useState, type FormEvent } from 'react'
-import { CheckCircle2, Loader2, Mail, Phone, Send } from 'lucide-react'
+import { CheckCircle2, Clock, Loader2, Mail, Phone, Send, ShieldCheck } from 'lucide-react'
 import { Section } from '../components/Section'
 import ErrorState from '../components/ErrorState'
 import { useSubmitContact } from '../hooks/useContact'
 import { usePageTitle } from '../hooks/usePageTitle'
 import type { ContactMessageCreate } from '../lib/types'
 
-type FormState = {
-  name: string
-  email: string
-  company: string
-  message: string
-}
-
+type FormState = { name: string; email: string; company: string; message: string }
 const INITIAL: FormState = { name: '', email: '', company: '', message: '' }
 
 function validate(form: FormState): Record<string, string> {
   const errors: Record<string, string> = {}
   if (!form.name.trim()) errors.name = 'Name is required.'
-  if (!form.email.trim()) {
-    errors.email = 'Email is required.'
-  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) {
-    errors.email = 'Enter a valid email address.'
-  }
+  if (!form.email.trim()) errors.email = 'Email is required.'
+  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim())) errors.email = 'Enter a valid email address.'
   if (!form.message.trim()) errors.message = 'Message is required.'
-  else if (form.message.trim().length < 10)
-    errors.message = 'Message should be at least 10 characters.'
+  else if (form.message.trim().length < 10) errors.message = 'Message should be at least 10 characters.'
   return errors
+}
+
+const baseInput: React.CSSProperties = {
+  display: 'block',
+  width: '100%',
+  marginTop: '0.375rem',
+  borderRadius: '1rem',
+  border: '1px solid var(--site-border)',
+  background: 'color-mix(in srgb, var(--site-surface) 90%, transparent)',
+  color: 'var(--site-text)',
+  padding: '0.75rem 1rem',
+  fontSize: '0.875rem',
+  outline: 'none',
+  transition: 'box-shadow 150ms ease, border-color 150ms ease',
+}
+
+function fieldStyle(error?: string): React.CSSProperties {
+  if (error) return { ...baseInput, borderColor: '#ef4444' }
+  return baseInput
 }
 
 export default function ContactPage() {
   usePageTitle('Contact')
-
   const [form, setForm] = useState<FormState>(INITIAL)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [touched, setTouched] = useState<Record<string, boolean>>({})
@@ -39,31 +47,24 @@ export default function ContactPage() {
 
   function update<K extends keyof FormState>(key: K, value: FormState[K]) {
     setForm((f) => ({ ...f, [key]: value }))
-    if (touched[key]) {
-      const nextErrors = validate({ ...form, [key]: value })
-      setErrors(nextErrors)
-    }
+    if (touched[key]) setErrors(validate({ ...form, [key]: value }))
   }
-
   function blur(key: keyof FormState) {
     setTouched((t) => ({ ...t, [key]: true }))
     setErrors(validate(form))
   }
-
   function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    const nextErrors = validate(form)
-    setErrors(nextErrors)
+    const next = validate(form)
+    setErrors(next)
     setTouched({ name: true, email: true, company: true, message: true })
-    if (Object.keys(nextErrors).length > 0) return
-
+    if (Object.keys(next).length > 0) return
     const payload: ContactMessageCreate = {
       name: form.name.trim(),
       email: form.email.trim(),
       company: form.company.trim(),
       message: form.message.trim(),
     }
-
     mutation.mutate(payload)
   }
 
@@ -71,71 +72,100 @@ export default function ContactPage() {
   const submitError = mutation.isError ? (mutation.error as Error).message : null
 
   return (
-    <main>
-      <Section className="pt-14 sm:pt-20">
-        <div className="grid gap-12 lg:grid-cols-5 lg:gap-16">
-          <div className="lg:col-span-2">
-            <p className="text-xs font-semibold uppercase tracking-widest text-brand-600 dark:text-brand-400">
+    <main className="relative isolate overflow-hidden">
+      <div aria-hidden className="absolute inset-0 -z-10">
+        <div className="grid-bg absolute inset-0 h-[34rem]" style={{ color: 'var(--site-text)' }} />
+        <div
+          className="absolute inset-x-0 top-0 mx-auto h-[28rem] max-w-4xl rounded-full opacity-60 blur-3xl animate-pulse-glow"
+          style={{ background: 'radial-gradient(50% 50% at 40% 40%, var(--site-glow), transparent 70%)' }}
+        />
+      </div>
+
+      <Section className="pt-20 sm:pt-28">
+        <div className="grid gap-14 lg:grid-cols-5 lg:gap-16">
+          <div className="animate-fade-up lg:col-span-2">
+            <span
+              className="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em]"
+              style={{
+                borderColor: 'color-mix(in srgb, var(--site-primary) 28%, transparent)',
+                background: 'var(--site-primary-soft)',
+                color: 'var(--site-primary)',
+              }}
+            >
+              <span className="size-1.5 rounded-full" style={{ background: 'var(--site-primary)' }} />
               Contact
-            </p>
-            <h1 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
+            </span>
+            <h1 className="mt-5 text-4xl font-semibold tracking-tight text-balance sm:text-5xl" style={{ color: 'var(--site-text)' }}>
               Let's talk about your project
             </h1>
-            <p className="mt-4 text-base leading-relaxed text-ink-600 dark:text-ink-400">
+            <p className="mt-6 text-base leading-relaxed" style={{ color: 'var(--site-muted)' }}>
               Tell us a bit about what you're working on. We'll get back to you
               within one business day with next steps or a suggestion.
             </p>
 
-            <ul className="mt-10 space-y-4 text-sm">
-              <li className="flex items-center gap-3">
-                <span className="inline-flex size-9 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-brand-600 text-white shadow-md shadow-brand-900/20">
-                  <Mail className="size-4" />
-                </span>
-                <a
-                  href="mailto:hello@test-site.dev"
-                  className="font-medium text-ink-800 hover:text-brand-700 dark:text-ink-200 dark:hover:text-brand-300"
-                >
-                  hello@test-site.dev
+            <ul className="mt-10 space-y-3 text-sm">
+              <li>
+                <a href="mailto:hello@test-site.dev" className="glass glass-spec flex items-center gap-4 rounded-2xl p-4 transition-transform hover:-translate-y-0.5">
+                  <span
+                    className="inline-flex size-11 items-center justify-center rounded-2xl text-white"
+                    style={{ background: 'var(--site-gradient)', boxShadow: '0 8px 20px -8px var(--site-glow)' }}
+                  >
+                    <Mail className="size-5" />
+                  </span>
+                  <span>
+                    <span className="block text-xs" style={{ color: 'var(--site-muted)' }}>Email</span>
+                    <span className="font-medium" style={{ color: 'var(--site-text)' }}>hello@test-site.dev</span>
+                  </span>
                 </a>
               </li>
-              <li className="flex items-center gap-3">
-                <span className="inline-flex size-9 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-brand-600 text-white shadow-md shadow-brand-900/20">
-                  <Phone className="size-4" />
-                </span>
-                <a
-                  href="tel:+15555550100"
-                  className="font-medium text-ink-800 hover:text-brand-700 dark:text-ink-200 dark:hover:text-brand-300"
-                >
-                  +1 (555) 555-0100
+              <li>
+                <a href="tel:+15555550100" className="glass glass-spec flex items-center gap-4 rounded-2xl p-4 transition-transform hover:-translate-y-0.5">
+                  <span
+                    className="inline-flex size-11 items-center justify-center rounded-2xl text-white"
+                    style={{ background: 'var(--site-gradient)', boxShadow: '0 8px 20px -8px var(--site-glow)' }}
+                  >
+                    <Phone className="size-5" />
+                  </span>
+                  <span>
+                    <span className="block text-xs" style={{ color: 'var(--site-muted)' }}>Phone</span>
+                    <span className="font-medium" style={{ color: 'var(--site-text)' }}>+1 (555) 555-0100</span>
+                  </span>
                 </a>
+              </li>
+              <li className="flex items-center gap-2 px-1 pt-2 text-xs" style={{ color: 'var(--site-muted)' }}>
+                <Clock className="size-4" /> Typical response time: under 24 hours
               </li>
             </ul>
           </div>
 
-          <div className="lg:col-span-3">
+          <div className="animate-fade-up lg:col-span-3" style={{ animationDelay: '120ms' }}>
             {submitted ? (
-              <div className="glass-strong glass-spec rounded-3xl border border-emerald-200/60 bg-emerald-50/60 p-8 dark:border-emerald-900/40 dark:bg-emerald-950/30">
-                <div className="flex items-start gap-3">
-                  <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400">
-                    <CheckCircle2 className="size-5" />
+              <div
+                role="status"
+                className="rounded-3xl border p-8"
+                style={{
+                  borderColor: 'color-mix(in srgb, #10b981 30%, transparent)',
+                  background: 'color-mix(in srgb, #10b981 8%, transparent)',
+                }}
+              >
+                <div className="flex items-start gap-4">
+                  <span
+                    className="inline-flex size-12 shrink-0 items-center justify-center rounded-full"
+                    style={{ background: 'color-mix(in srgb, #10b981 20%, transparent)', color: '#059669' }}
+                  >
+                    <CheckCircle2 className="size-6" />
                   </span>
                   <div>
-                    <h2 className="text-lg font-semibold tracking-tight text-emerald-900 dark:text-emerald-200">
+                    <h2 className="text-xl font-semibold tracking-tight" style={{ color: '#065f46' }}>
                       Message received
                     </h2>
-                    <p className="mt-2 text-sm leading-relaxed text-emerald-800 dark:text-emerald-300">
-                      Thanks, {form.name.split(' ')[0] || 'friend'}. We'll be in
-                      touch soon — usually within a business day.
+                    <p className="mt-2 text-sm leading-relaxed" style={{ color: '#047857' }}>
+                      Thanks, {form.name.split(' ')[0] || 'friend'}. We'll be in touch soon — usually within a business day.
                     </p>
                     <button
                       type="button"
-                      onClick={() => {
-                        setForm(INITIAL)
-                        setTouched({})
-                        setErrors({})
-                        mutation.reset()
-                      }}
-                      className="mt-5 inline-flex items-center rounded-full border border-emerald-300/70 bg-white/70 px-4 py-2 text-sm font-medium text-emerald-800 transition-all hover:bg-white dark:border-emerald-800/60 dark:bg-emerald-900/40 dark:text-emerald-200 dark:hover:bg-emerald-900/60"
+                      onClick={() => { setForm(INITIAL); setTouched({}); setErrors({}); mutation.reset() }}
+                      className="btn-secondary mt-5 !px-4 !py-2 text-sm"
                     >
                       Send another message
                     </button>
@@ -146,93 +176,71 @@ export default function ContactPage() {
               <form
                 noValidate
                 onSubmit={onSubmit}
-                className="glass-strong glass-spec rounded-3xl border border-white/40 bg-white/50 p-6 sm:p-8 dark:border-white/10 dark:bg-white/5"
+                className="glass glass-spec rounded-3xl p-6 sm:p-9"
               >
+                <h2 className="text-lg font-semibold tracking-tight" style={{ color: 'var(--site-text)' }}>
+                  Send us a message
+                </h2>
+                <p className="mt-1 text-sm" style={{ color: 'var(--site-muted)' }}>
+                  Fields marked * are required.
+                </p>
+
                 {submitError && (
-                  <div className="mb-6">
-                    <ErrorState
-                      title="Couldn’t send your message"
-                      message={submitError}
-                    />
+                  <div className="mt-6">
+                    <ErrorState title="Couldn’t send your message" message={submitError} />
                   </div>
                 )}
 
-                <div className="grid gap-5 sm:grid-cols-2">
-                  <Field
-                    label="Name"
-                    id="name"
-                    value={form.name}
+                <div className="mt-6 grid gap-5 sm:grid-cols-2">
+                  <Field label="Name" id="name" value={form.name}
                     error={touched.name ? errors.name : undefined}
-                    onChange={(v) => update('name', v)}
-                    onBlur={() => blur('name')}
-                    required
-                  />
-                  <Field
-                    label="Email"
-                    id="email"
-                    type="email"
-                    value={form.email}
+                    onChange={(v) => update('name', v)} onBlur={() => blur('name')}
+                    placeholder="Jane Doe" required />
+                  <Field label="Email" id="email" type="email" value={form.email}
                     error={touched.email ? errors.email : undefined}
-                    onChange={(v) => update('email', v)}
-                    onBlur={() => blur('email')}
-                    required
-                  />
+                    onChange={(v) => update('email', v)} onBlur={() => blur('email')}
+                    placeholder="jane@company.com" required />
                 </div>
 
                 <div className="mt-5">
-                  <Field
-                    label="Company"
-                    id="company"
-                    value={form.company}
-                    onChange={(v) => update('company', v)}
-                    onBlur={() => blur('company')}
-                    optional
-                  />
+                  <Field label="Company" id="company" value={form.company}
+                    onChange={(v) => update('company', v)} onBlur={() => blur('company')}
+                    placeholder="Acme Inc." optional />
                 </div>
 
                 <div className="mt-5">
-                  <label
-                    htmlFor="message"
-                    className="block text-sm font-medium text-ink-800 dark:text-ink-200"
-                  >
-                    Message <span className="text-red-600 dark:text-red-400">*</span>
+                  <label htmlFor="message" className="block text-sm font-medium" style={{ color: 'var(--site-text)' }}>
+                    Message <span className="text-red-500">*</span>
                   </label>
                   <textarea
-                    id="message"
-                    rows={6}
-                    value={form.message}
+                    id="message" rows={6} value={form.message}
+                    placeholder="What are you building, and what does success look like?"
                     onChange={(e) => update('message', e.target.value)}
                     onBlur={() => blur('message')}
-                    className={`glass-subtle mt-1.5 block w-full rounded-2xl border bg-white/40 px-4 py-3 text-sm text-ink-900 shadow-sm outline-none transition-all placeholder:text-ink-400 focus:bg-white/70 focus:ring-2 dark:bg-white/5 dark:text-ink-100 dark:placeholder:text-ink-500 dark:focus:bg-white/10 ${
-                      touched.message && errors.message
-                        ? 'border-red-300 focus:border-red-400 focus:ring-red-200/60 dark:border-red-800 dark:focus:ring-red-900/40'
-                        : 'border-white/50 focus:border-brand-400 focus:ring-brand-300/50 dark:border-white/10 dark:focus:border-brand-500 dark:focus:ring-brand-800/40'
-                    }`}
+                    aria-invalid={touched.message && !!errors.message}
+                    style={fieldStyle(touched.message ? errors.message : undefined)}
+                    onFocus={(e) => (e.currentTarget.style.boxShadow = '0 0 0 4px var(--site-primary-soft)')}
+                    onBlurCapture={(e) => (e.currentTarget.style.boxShadow = 'none')}
                   />
                   {touched.message && errors.message && (
-                    <p className="mt-1.5 text-xs text-red-600 dark:text-red-400">{errors.message}</p>
+                    <p className="mt-1.5 text-xs text-red-500">{errors.message}</p>
                   )}
                 </div>
 
-                <div className="mt-6 flex items-center justify-between gap-4">
-                  <p className="text-xs text-ink-500 dark:text-ink-500">
+                <div className="mt-7 flex flex-col-reverse gap-4 sm:flex-row sm:items-center sm:justify-between">
+                  <p className="flex items-center gap-2 text-xs" style={{ color: 'var(--site-muted)' }}>
+                    <ShieldCheck className="size-4 text-emerald-500" />
                     We'll only use this to reply. No lists, no spam.
                   </p>
                   <button
                     type="submit"
                     disabled={mutation.isPending}
-                    className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-b from-brand-500 to-brand-700 px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-brand-900/30 transition-transform hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:scale-100"
+                    className="btn-primary disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     {mutation.isPending ? (
-                      <>
-                        <Loader2 className="size-4 animate-spin" />
-                        Sending…
-                      </>
+                      <><Loader2 className="size-4 animate-spin" /> Sending…</>
                     ) : (
-                      <>
-                        Send message
-                        <Send className="size-4" />
-                      </>
+                      <>Send message <Send className="size-4" /></>
                     )}
                   </button>
                 </div>
@@ -246,47 +254,29 @@ export default function ContactPage() {
 }
 
 type FieldProps = {
-  label: string
-  id: string
-  value: string
-  onChange: (value: string) => void
-  onBlur: () => void
-  error?: string
-  type?: string
-  required?: boolean
-  optional?: boolean
+  label: string; id: string; value: string
+  onChange: (value: string) => void; onBlur: () => void
+  error?: string; type?: string; placeholder?: string
+  required?: boolean; optional?: boolean
 }
 
-function Field({
-  label,
-  id,
-  value,
-  onChange,
-  onBlur,
-  error,
-  type = 'text',
-  required = false,
-  optional = false,
-}: FieldProps) {
+function Field({ label, id, value, onChange, onBlur, error, type = 'text', placeholder, required = false, optional = false }: FieldProps) {
   return (
     <div>
-      <label htmlFor={id} className="block text-sm font-medium text-ink-800 dark:text-ink-200">
-        {label} {required && <span className="text-red-600 dark:text-red-400">*</span>}
-        {optional && <span className="text-ink-400"> (optional)</span>}
+      <label htmlFor={id} className="block text-sm font-medium" style={{ color: 'var(--site-text)' }}>
+        {label} {required && <span className="text-red-500">*</span>}
+        {optional && <span style={{ color: 'var(--site-muted)' }}> (optional)</span>}
       </label>
       <input
-        id={id}
-        type={type}
-        value={value}
+        id={id} type={type} value={value} placeholder={placeholder}
         onChange={(e) => onChange(e.target.value)}
         onBlur={onBlur}
-        className={`glass-subtle mt-1.5 block w-full rounded-2xl border bg-white/40 px-4 py-2.5 text-sm text-ink-900 shadow-sm outline-none transition-all placeholder:text-ink-400 focus:bg-white/70 focus:ring-2 dark:bg-white/5 dark:text-ink-100 dark:placeholder:text-ink-500 dark:focus:bg-white/10 ${
-          error
-            ? 'border-red-300 focus:border-red-400 focus:ring-red-200/60 dark:border-red-800 dark:focus:ring-red-900/40'
-            : 'border-white/50 focus:border-brand-400 focus:ring-brand-300/50 dark:border-white/10 dark:focus:border-brand-500 dark:focus:ring-brand-800/40'
-        }`}
+        aria-invalid={!!error}
+        style={fieldStyle(error)}
+        onFocus={(e) => (e.currentTarget.style.boxShadow = '0 0 0 4px var(--site-primary-soft)')}
+        onBlurCapture={(e) => (e.currentTarget.style.boxShadow = 'none')}
       />
-      {error && <p className="mt-1.5 text-xs text-red-600 dark:text-red-400">{error}</p>}
+      {error && <p className="mt-1.5 text-xs text-red-500">{error}</p>}
     </div>
   )
 }

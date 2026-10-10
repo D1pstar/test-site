@@ -10,15 +10,22 @@ export default function ErrorState({
   message = 'We couldn’t load this content. Please try again.',
 }: Props) {
   return (
-    <div className="glass glass-spec flex items-start gap-3 rounded-2xl border border-red-200/60 bg-red-50/60 p-6 dark:border-red-900/40 dark:bg-red-950/30">
-      <span className="inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-red-500/15 text-red-600 dark:text-red-400">
-        <AlertTriangle className="size-4.5" />
+    <div
+      role="alert"
+      className="flex items-start gap-3 rounded-2xl border p-5"
+      style={{
+        borderColor: 'color-mix(in srgb, #ef4444 35%, transparent)',
+        background: 'color-mix(in srgb, #ef4444 8%, transparent)',
+      }}
+    >
+      <span className="inline-flex size-9 shrink-0 items-center justify-center rounded-full"
+        style={{ background: 'color-mix(in srgb, #ef4444 18%, transparent)', color: '#ef4444' }}
+      >
+        <AlertTriangle className="size-4" />
       </span>
       <div>
-        <h3 className="text-sm font-semibold text-red-900 dark:text-red-200">
-          {title}
-        </h3>
-        <p className="mt-1 text-sm text-red-700 dark:text-red-300">{message}</p>
+        <h3 className="text-sm font-semibold" style={{ color: '#b91c1c' }}>{title}</h3>
+        <p className="mt-1 text-sm" style={{ color: '#dc2626' }}>{message}</p>
       </div>
     </div>
   )

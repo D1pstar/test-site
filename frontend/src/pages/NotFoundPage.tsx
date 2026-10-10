@@ -11,45 +11,48 @@ const QUICK_LINKS = [
 
 export default function NotFoundPage() {
   usePageTitle('Page not found')
-
   return (
-    <main>
-      <Section className="pt-20 sm:pt-28">
-        <div className="mx-auto max-w-2xl text-center">
-          <span className="inline-flex size-16 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-brand-700 text-white shadow-lg shadow-brand-900/30">
+    <main className="relative isolate overflow-hidden">
+      <div aria-hidden className="absolute inset-0 -z-10">
+        <div className="grid-bg absolute inset-0 h-[38rem]" style={{ color: 'var(--site-text)' }} />
+        <div
+          className="absolute inset-x-0 top-0 mx-auto h-[30rem] max-w-4xl rounded-full opacity-60 blur-3xl animate-pulse-glow"
+          style={{ background: 'radial-gradient(50% 50% at 50% 40%, var(--site-glow), transparent 70%)' }}
+        />
+      </div>
+      <Section className="pt-24 sm:pt-36">
+        <div className="animate-fade-up mx-auto max-w-2xl text-center">
+          <span
+            className="inline-flex size-16 items-center justify-center rounded-2xl text-white"
+            style={{ background: 'var(--site-gradient)', boxShadow: '0 14px 30px -12px var(--site-glow), inset 0 1px 0 0 rgb(255 255 255 / 0.35)' }}
+          >
             <Compass className="size-8" />
           </span>
-          <p className="mt-6 text-sm font-semibold uppercase tracking-widest text-brand-600 dark:text-brand-400">
-            404 — Not found
+          <p
+            className="mt-8 text-7xl font-semibold tracking-tighter sm:text-8xl"
+            style={{ background: 'var(--site-gradient)', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent' }}
+          >
+            404
           </p>
-          <h1 className="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">
+          <h1 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl" style={{ color: 'var(--site-text)' }}>
             This page wandered off
           </h1>
-          <p className="mt-4 text-base leading-relaxed text-ink-600 dark:text-ink-400">
+          <p className="mt-4 text-base leading-relaxed" style={{ color: 'var(--site-muted)' }}>
             The link may be broken, or the page may have moved. Either way,
             there's nothing here to see.
           </p>
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <Link
-              to="/"
-              className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-b from-brand-500 to-brand-700 px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-brand-900/30 transition-transform hover:scale-[1.02] active:scale-[0.98]"
-            >
-              <Home className="size-4" />
-              Back home
+            <Link to="/" className="btn-primary">
+              <Home className="size-4" /> Back home
             </Link>
-            <button
-              type="button"
-              onClick={() => window.history.back()}
-              className="glass glass-spec inline-flex items-center gap-1.5 rounded-full border border-white/50 bg-white/40 px-5 py-2.5 text-sm font-medium text-ink-800 transition-all hover:bg-white/60 dark:border-white/10 dark:bg-white/5 dark:text-ink-200 dark:hover:bg-white/10"
-            >
-              <ArrowLeft className="size-4" />
-              Go back
+            <button type="button" onClick={() => window.history.back()} className="btn-secondary">
+              <ArrowLeft className="size-4" /> Go back
             </button>
           </div>
 
-          <div className="mt-12 border-t border-ink-200/60 pt-8 dark:border-ink-800/60">
-            <p className="text-xs font-semibold uppercase tracking-widest text-ink-500 dark:text-ink-500">
+          <div className="mt-14 border-t pt-8" style={{ borderColor: 'var(--site-border)' }}>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em]" style={{ color: 'var(--site-muted)' }}>
               Or try one of these
             </p>
             <ul className="mt-4 flex flex-wrap items-center justify-center gap-2">
@@ -57,7 +60,8 @@ export default function NotFoundPage() {
                 <li key={l.to}>
                   <Link
                     to={l.to}
-                    className="glass-subtle inline-flex items-center rounded-full border border-white/50 bg-white/40 px-4 py-1.5 text-sm font-medium text-ink-700 transition-all hover:bg-white/60 dark:border-white/10 dark:bg-white/5 dark:text-ink-200 dark:hover:bg-white/10"
+                    className="glass inline-flex items-center rounded-full px-4 py-2 text-sm font-medium transition-all hover:-translate-y-0.5"
+                    style={{ color: 'var(--site-text)' }}
                   >
                     {l.label}
                   </Link>

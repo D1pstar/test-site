@@ -15,9 +15,9 @@ export default function ThemeToggle({ className = '' }: Props) {
       onClick={toggle}
       aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
       title={isDark ? 'Light mode' : 'Dark mode'}
-      className={`inline-flex size-9 items-center justify-center rounded-full text-ink-700 transition-all hover:bg-white/60 active:scale-95 dark:text-ink-200 dark:hover:bg-white/10 ${className}`}
+      className={`inline-flex size-10 items-center justify-center rounded-full text-ink-700 transition-all hover:bg-ink-900/5 active:scale-95 dark:text-ink-200 dark:hover:bg-white/10 ${className}`}
     >
-      {isDark ? <Sun className="size-4.5" /> : <Moon className="size-4.5" />}
+      {isDark ? <Sun className="size-[18px]" /> : <Moon className="size-[18px]" />}
     </button>
   )
 }
