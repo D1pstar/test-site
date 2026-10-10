@@ -1,7 +1,10 @@
 from functools import lru_cache
 
-from pydantic import Field
+from pydantic import Field, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+_DEV_SECRET = "dev-only-insecure-secret-change-me"
 
 
 class Settings(BaseSettings):
@@ -30,6 +33,24 @@ class Settings(BaseSettings):
         default="sqlite:///./data/app.db",
         alias="DATABASE_URL",
     )
+
+    # Signs the admin session cookie. MUST be a long random value in production.
+    secret_key: str = Field(default=_DEV_SECRET, alias="SECRET_KEY")
+    session_hours: int = Field(default=12, alias="SESSION_HOURS")
+
+    # Uploaded images. Point this at persistent storage in production.
+    upload_dir: str = Field(default="uploads", alias="UPLOAD_DIR")
+    max_upload_mb: int = Field(default=5, alias="MAX_UPLOAD_MB")
+
+    @model_validator(mode="after")
+    def _require_real_secret_in_production(self) -> "Settings":
+        if self.app_env == "production" and (
+            self.secret_key == _DEV_SECRET or len(self.secret_key) < 32
+        ):
+            raise ValueError(
+                "SECRET_KEY must be set to a random value of 32+ characters in production"
+            )
+        return self
 
     @property
     def cors_origins(self) -> list[str]:

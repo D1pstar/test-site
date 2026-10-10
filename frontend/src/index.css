@@ -28,6 +28,23 @@
   --color-ink-700: oklch(0.34 0.00 260);
   --color-ink-800: oklch(0.24 0.00 260);
   --color-ink-900: oklch(0.16 0.00 260);
+
+  --animate-fade-up: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-marquee: marquee 38s linear infinite;
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-10px); }
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
 }
 
 html,
@@ -36,19 +53,185 @@ body,
   height: 100%;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   @apply bg-ink-50 text-ink-900 antialiased dark:bg-ink-900 dark:text-ink-100;
   font-family: var(--font-sans);
   font-feature-settings: "cv11", "ss01";
-  background-attachment: fixed;
 }
 
 html:not(.no-transition) body {
   transition: background-color 150ms ease, color 150ms ease;
 }
 
+::selection {
+  background: color-mix(in oklch, var(--color-brand-500) 25%, transparent);
+}
+
+/* Headings can use a different font than body text (set from the admin Theme tab). */
+@layer base {
+  h1, h2, h3, h4 {
+    font-family: var(--font-heading, var(--font-sans));
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-brand-500);
+  outline-offset: 2px;
+}
+
 /* ===========================================================
-   LIQUID GLASS — BASE SURFACES
+   BUTTONS
+   =========================================================== */
+
+@utility btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  padding: 0.7rem 1.4rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(180deg, var(--color-brand-500), var(--color-brand-700));
+  box-shadow:
+    inset 0 1px 0 0 rgb(255 255 255 / 0.3),
+    0 8px 24px -8px color-mix(in oklch, var(--color-brand-700) 70%, transparent);
+  transition: transform 150ms ease, box-shadow 150ms ease, filter 150ms ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.07);
+  }
+  &:active {
+    transform: translateY(0) scale(0.98);
+  }
+}
+
+@utility btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  padding: 0.7rem 1.4rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-ink-800);
+  background: rgb(255 255 255 / 0.7);
+  border: 1px solid var(--color-ink-200);
+  transition: background-color 150ms ease, transform 150ms ease, border-color 150ms ease;
+
+  &:hover {
+    background: white;
+    border-color: var(--color-ink-300);
+    transform: translateY(-1px);
+  }
+}
+
+.dark .btn-secondary {
+  color: var(--color-ink-100);
+  background: rgb(255 255 255 / 0.06);
+  border-color: rgb(255 255 255 / 0.14);
+}
+.dark .btn-secondary:hover {
+  background: rgb(255 255 255 / 0.12);
+}
+
+/* ===========================================================
+   SURFACES
+   =========================================================== */
+
+@utility card {
+  position: relative;
+  border-radius: 1.5rem;
+  border: 1px solid var(--color-ink-200);
+  background: rgb(255 255 255 / 0.8);
+  box-shadow:
+    0 1px 2px rgb(15 23 42 / 0.04),
+    0 12px 32px -16px rgb(15 23 42 / 0.12);
+}
+
+.dark .card {
+  border-color: rgb(255 255 255 / 0.09);
+  background: rgb(255 255 255 / 0.04);
+  box-shadow: 0 12px 32px -16px rgb(0 0 0 / 0.6);
+}
+
+@utility card-hover {
+  transition: transform 250ms ease, box-shadow 250ms ease, border-color 250ms ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    border-color: var(--color-brand-300);
+    box-shadow:
+      0 1px 2px rgb(15 23 42 / 0.04),
+      0 24px 48px -20px color-mix(in oklch, var(--color-brand-700) 35%, transparent);
+  }
+}
+
+.dark .card-hover:hover {
+  border-color: color-mix(in oklch, var(--color-brand-500) 60%, transparent);
+}
+
+@utility text-gradient {
+  background-image: linear-gradient(
+    100deg,
+    var(--color-brand-500),
+    var(--accent-2, oklch(0.62 0.2 300)) 60%,
+    var(--accent-3, oklch(0.7 0.17 340))
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility grid-bg {
+  background-image:
+    linear-gradient(to right, rgb(15 23 42 / 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(15 23 42 / 0.05) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, black 30%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, black 30%, transparent 75%);
+}
+
+.dark .grid-bg {
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.06) 1px, transparent 1px);
+}
+
+/* Scroll reveal (toggled by the Reveal component) */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .animate-float,
+  .animate-marquee {
+    animation: none;
+  }
+}
+
+/* ===========================================================
+   LIQUID GLASS (kept for nav, floating cards, form fields)
    =========================================================== */
 
 @utility glass {
@@ -59,7 +242,6 @@ html:not(.no-transition) body {
     inset 0 1px 0 0 rgb(255 255 255 / 0.55),
     inset 0 0 0 1px rgb(255 255 255 / 0.28),
     inset 0 -1px 0 0 rgb(0 0 0 / 0.06),
-    inset 0 -2px 6px 0 rgb(0 0 0 / 0.04),
     0 10px 30px -10px rgb(15 23 42 / 0.18);
 }
 
@@ -71,7 +253,6 @@ html:not(.no-transition) body {
     inset 0 1px 0 0 rgb(255 255 255 / 0.7),
     inset 0 0 0 1px rgb(255 255 255 / 0.35),
     inset 0 -1px 0 0 rgb(0 0 0 / 0.08),
-    inset 0 -3px 10px 0 rgb(0 0 0 / 0.06),
     0 20px 50px -15px rgb(15 23 42 / 0.28);
 }
 
@@ -87,115 +268,44 @@ html:not(.no-transition) body {
 
 @utility glass-spec {
   overflow: hidden;
-}
 
-@utility glass-spec {
   &::before {
     content: "";
     position: absolute;
     inset: 0;
     border-radius: inherit;
     pointer-events: none;
-    background:
-      linear-gradient(
-        135deg,
-        rgb(255 255 255 / 0.35) 0%,
-        rgb(255 255 255 / 0.12) 25%,
-        transparent 45%,
-        transparent 55%,
-        rgb(255 255 255 / 0.06) 75%,
-        rgb(255 255 255 / 0.14) 100%
-      );
-    opacity: 0.9;
-    transition: opacity 250ms ease;
-  }
-
-  &:hover::before {
-    opacity: 1;
+    background: linear-gradient(
+      135deg,
+      rgb(255 255 255 / 0.3) 0%,
+      rgb(255 255 255 / 0.1) 25%,
+      transparent 45%,
+      transparent 55%,
+      rgb(255 255 255 / 0.05) 75%,
+      rgb(255 255 255 / 0.12) 100%
+    );
   }
 }
 
-.dark .glass {
+.dark .glass,
+.dark .glass-strong,
+.dark .glass-subtle {
   box-shadow:
     inset 0 1px 0 0 rgb(255 255 255 / 0.14),
     inset 0 0 0 1px rgb(255 255 255 / 0.08),
-    inset 0 -1px 0 0 rgb(0 0 0 / 0.4),
-    inset 0 -3px 12px 0 rgb(0 0 0 / 0.28),
     0 12px 36px -12px rgb(0 0 0 / 0.55);
 }
 
-.dark .glass-strong {
-  box-shadow:
-    inset 0 1px 0 0 rgb(255 255 255 / 0.18),
-    inset 0 0 0 1px rgb(255 255 255 / 0.1),
-    inset 0 -1px 0 0 rgb(0 0 0 / 0.5),
-    inset 0 -4px 14px 0 rgb(0 0 0 / 0.35),
-    0 24px 60px -18px rgb(0 0 0 / 0.7);
-}
-
-.dark .glass-subtle {
-  box-shadow:
-    inset 0 1px 0 0 rgb(255 255 255 / 0.1),
-    inset 0 0 0 1px rgb(255 255 255 / 0.06),
-    0 8px 22px -10px rgb(0 0 0 / 0.5);
-}
-
 .dark .glass-spec::before {
-  background:
-    linear-gradient(
-      135deg,
-      rgb(255 255 255 / 0.16) 0%,
-      rgb(255 255 255 / 0.05) 25%,
-      transparent 45%,
-      transparent 55%,
-      rgb(255 255 255 / 0.03) 75%,
-      rgb(255 255 255 / 0.08) 100%
-    );
-}
-
-/* ===========================================================
-   LIQUID GLASS — METABALL CONNECTION
-   ===========================================================
-
-   When two glass panels get close, Apple's Liquid Glass merges them
-   into one continuous surface — the shared edge softens, rims blend,
-   the pair reads as a single drop.
-
-   We can't do true fluid simulation in CSS, but the classic "goo"
-   filter chain approximates it well:
-
-     1. Blur the whole group  — softens every edge
-     2. Contrast the result   — re-hardens edges, and pulls any two
-                                blurred shapes together at their
-                                nearest points (this is the merge)
-     3. Composit onto itself  — restores fill density
-
-   Apply to a PARENT that wraps the glass children. Children keep
-   their own glass / glass-spec classes; the parent just adds the
-   filter chain. Any two children that touch or come within ~8px
-   will visually merge.
-   =========================================================== */
-
-@utility glass-goo {
-  position: relative;
-  isolation: isolate;
-  filter: url(#glass-goo-filter);
-}
-
-/* Because `filter` on the parent would also blur its children's text
-   and icons, we offset that by rendering the group inside an SVG that
-   only contains the filter, then re-hardening. The `isolation: isolate`
-   above keeps the filter from bleeding into siblings. */
-
-@utility glass-goo-fallback {
-  /* Fallback for browsers without SVG filter support — plain blur + contrast */
-  filter: blur(0.5px) contrast(1.2);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .glass-goo {
-    filter: none;
-  }
+  background: linear-gradient(
+    135deg,
+    rgb(255 255 255 / 0.12) 0%,
+    rgb(255 255 255 / 0.04) 25%,
+    transparent 45%,
+    transparent 55%,
+    rgb(255 255 255 / 0.02) 75%,
+    rgb(255 255 255 / 0.06) 100%
+  );
 }
 
 /* ===========================================================
@@ -208,18 +318,15 @@ html:not(.no-transition) body {
   z-index: -1;
   pointer-events: none;
   background:
-    radial-gradient(60rem 60rem at 15% -10%, rgb(122 89 255 / 0.35), transparent 60%),
-    radial-gradient(55rem 55rem at 100% 20%, rgb(80 200 255 / 0.28), transparent 60%),
-    radial-gradient(60rem 60rem at 20% 110%, rgb(255 140 200 / 0.24), transparent 60%),
-    radial-gradient(50rem 50rem at 90% 110%, rgb(140 255 200 / 0.18), transparent 60%);
+    radial-gradient(50rem 40rem at 10% -10%, rgb(122 89 255 / 0.22), transparent 60%),
+    radial-gradient(45rem 40rem at 100% 10%, rgb(80 200 255 / 0.18), transparent 60%),
+    radial-gradient(50rem 40rem at 0% 110%, rgb(255 140 200 / 0.14), transparent 60%);
   animation: ambient-drift 40s ease-in-out infinite alternate;
-  filter: blur(20px);
 }
 
 @keyframes ambient-drift {
   0%   { transform: translate3d(0, 0, 0) scale(1); }
-  50%  { transform: translate3d(-2%, 1%, 0) scale(1.03); }
-  100% { transform: translate3d(2%, -1%, 0) scale(1.02); }
+  100% { transform: translate3d(2%, -1%, 0) scale(1.04); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -230,8 +337,7 @@ html:not(.no-transition) body {
 
 .dark .ambient-bg {
   background:
-    radial-gradient(60rem 60rem at 15% -10%, rgb(90 60 200 / 0.4), transparent 60%),
-    radial-gradient(55rem 55rem at 100% 20%, rgb(30 90 200 / 0.35), transparent 60%),
-    radial-gradient(60rem 60rem at 20% 110%, rgb(140 40 120 / 0.3), transparent 60%),
-    radial-gradient(50rem 50rem at 90% 110%, rgb(40 120 120 / 0.22), transparent 60%);
+    radial-gradient(50rem 40rem at 10% -10%, rgb(90 60 200 / 0.35), transparent 60%),
+    radial-gradient(45rem 40rem at 100% 10%, rgb(30 90 200 / 0.28), transparent 60%),
+    radial-gradient(50rem 40rem at 0% 110%, rgb(140 40 120 / 0.22), transparent 60%);
 }

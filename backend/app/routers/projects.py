@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.models import Project
-from app.schemas import ProjectCreate, ProjectRead
+from app.schemas import ProjectRead
 
 router = APIRouter(prefix="/api/projects", tags=["projects"])
 
@@ -20,13 +20,4 @@ def get_project(slug: str, db: Session = Depends(get_db)) -> Project:
     project = db.scalar(select(Project).where(Project.slug == slug))
     if project is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="project not found")
-    return project
-
-
-@router.post("", response_model=ProjectRead, status_code=status.HTTP_201_CREATED)
-def create_project(payload: ProjectCreate, db: Session = Depends(get_db)) -> Project:
-    project = Project(**payload.model_dump())
-    db.add(project)
-    db.commit()
-    db.refresh(project)
     return project

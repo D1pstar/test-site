@@ -1,8 +1,8 @@
-from fastapi import APIRouter, Depends, status
-from sqlalchemy import select
+from fastapi import APIRouter, Depends, Request, status
 from sqlalchemy.orm import Session
 
 from app.database import get_db
+from app.limiter import limiter
 from app.models import ContactMessage
 from app.schemas import ContactMessageCreate, ContactMessageRead
 
@@ -10,8 +10,11 @@ router = APIRouter(prefix="/api/contact", tags=["contact"])
 
 
 @router.post("", response_model=ContactMessageRead, status_code=status.HTTP_201_CREATED)
+@limiter.limit("5/minute;30/day")
 def submit_contact(
-    payload: ContactMessageCreate, db: Session = Depends(get_db)
+    request: Request,  # required by slowapi
+    payload: ContactMessageCreate,
+    db: Session = Depends(get_db),
 ) -> ContactMessage:
     msg = ContactMessage(**payload.model_dump())
     db.add(msg)
@@ -20,8 +23,5 @@ def submit_contact(
     return msg
 
 
-@router.get("", response_model=list[ContactMessageRead])
-def list_contact_messages(db: Session = Depends(get_db)) -> list[ContactMessage]:
-    """Dev-only helper so we can eyeball submissions in the browser."""
-    stmt = select(ContactMessage).order_by(ContactMessage.created_at.desc())
-    return list(db.scalars(stmt).all())
+# NOTE: the public GET (list all messages) was removed: it exposed every
+# visitor's name/email/message. Add an authenticated admin route if needed.

@@ -13,6 +13,8 @@ export function useSeededOnce() {
   const ran = useRef(false)
 
   useEffect(() => {
+    // Production never seeds: the backend route doesn't exist there.
+    if (!import.meta.env.DEV) return
     if (ran.current) return
     ran.current = true
     if (sessionStorage.getItem(KEY)) return

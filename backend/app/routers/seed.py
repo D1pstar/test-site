@@ -5,10 +5,11 @@ while building the demo site; remove or gate behind a flag before shipping
 anything real.
 """
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import delete
 from sqlalchemy.orm import Session
 
+from app.config import settings
 from app.database import get_db
 from app.models import Project, Service, Testimonial
 
@@ -165,6 +166,9 @@ TESTIMONIALS = [
 
 @router.post("")
 def seed(db: Session = Depends(get_db)) -> dict[str, int]:
+    # Defense in depth: even if mounted by mistake, refuse outside development.
+    if settings.app_env != "development":
+        raise HTTPException(status_code=404, detail="Not found")
     db.execute(delete(Service))
     db.execute(delete(Project))
     db.execute(delete(Testimonial))
